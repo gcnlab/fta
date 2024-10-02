@@ -1,0 +1,44 @@
+{
+
+    "gsFiles": [
+      { "fileId": "GSE-020", "fileName": "【GSE-020】品目数量単位",             "path": "/mappingexcel/【GSE-020】【GIO-080】品目数量単位.xlsx",              "thumbnail": "/thumbnails/GSE-020.png" },
+      { "fileId": "GSE-030", "fileName": "【GSE-030】品目マスタ"  ,             "path": "/mappingexcel/【GSE-030】【GIO-020】品目マスタ.xlsx",                "thumbnail": "/thumbnails/GSE-030.png" },
+      { "fileId": "GSE-040", "fileName": "【GSE-040】品目テキスト",             "path": "/mappingexcel/【GSE-040】【GIO-010】品目テキスト.xlsx",              "thumbnail": "/thumbnails/GSE-040.png" },
+      { "fileId": "GSE-060", "fileName": "【GSE-060】品目階層",                 "path": "/mappingexcel/【GSE-060】【GIO-なし】品目階層.xlsx",                 "thumbnail": "/thumbnails/GSE-060.png" },
+      { "fileId": "GSE-070", "fileName": "【GSE-070】価格マスタ",               "path": "/mappingexcel/【GSE-070】【GIO-なし】価格マスタ.xlsx",               "thumbnail": "/thumbnails/GSE-070.png" },
+      { "fileId": "GSE-080", "fileName": "【GSE-080】ビジネスパートナーマスタ", "path": "/mappingexcel/【GSE-080】【GIO-なし】ビジネスパートナーマスタ.xlsx", "thumbnail": "/thumbnails/GSE-080.png" },
+      { "fileId": "GSE-081", "fileName": "【GSE-081】取引先機能マスタ",         "path": "/mappingexcel/【GSE-081】【GIO-なし】取引先機能マスタ.xlsx",         "thumbnail": "/thumbnails/GSE-081.png" },
+      { "fileId": "GSE-082", "fileName": "【GSE-082】BPリレーションマスタ",     "path": "/mappingexcel/【GSE-082】【GIO-なし】BPリレーションマスタ.xlsx",     "thumbnail": "/thumbnails/GSE-082.png" },
+      { "fileId": "GSE-100", "fileName": "【GSE-100】営業課マスタ",             "path": "/mappingexcel/【GSE-100】【GIO-なし】営業課マスタ.xlsx",             "thumbnail": "/thumbnails/GSE-100.png" },
+      { "fileId": "GSE-101", "fileName": "【GSE-101】販売組織マスタ",           "path": "/mappingexcel/【GSE-101】【GIO-なし】販売組織マスタ.xlsx",           "thumbnail": "/thumbnails/GSE-101.png" },
+      { "fileId": "GSE-110", "fileName": "【GSE-110】為替レートマスタ",         "path": "/mappingexcel/【GSE-110】【GIO-なし】為替レートマスタ.xlsx",         "thumbnail": "/thumbnails/GSE-110.png" },
+      { "fileId": "GSE-120", "fileName": "【GSE-120】品目評価",                 "path": "/mappingexcel/【GSE-120】【GIO-070】品目評価.xlsx",                  "thumbnail": "/thumbnails/GSE-120.png" },
+      { "fileId": "GSE-130", "fileName": "【GSE-130】販売伝票",                 "path": "/mappingexcel/【GSE-130】【GIO-なし】販売伝票.xlsx",                 "thumbnail": "/thumbnails/GSE-130.png" },
+      { "fileId": "GSE-140", "fileName": "【GSE-140】請求売上",                 "path": "/mappingexcel/【GSE-140】【GIO-なし】請求売上.xlsx",                 "thumbnail": "/thumbnails/GSE-140.png" },
+      { "fileId": "GSE-141", "fileName": "【GSE-141】出荷",                     "path": "/mappingexcel/【GSE-141】【GIO-050】出荷.xlsx",                      "thumbnail": "/thumbnails/GSE-141.png" },
+      { "fileId": "GSE-160", "fileName": "【GSE-160】受注",                     "path": "/mappingexcel/【GSE-160】【GIO-なし】受注.xlsx",                     "thumbnail": "/thumbnails/GSE-160.png" }
+    ],
+  
+    "giosFiles": [
+      { "fileId": "GIO-010", "fileName": "【GIO-010】品目テキスト", "path": "/mappingexcel/【GSE-040】【GIO-010】品目テキスト.xlsx", "thumbnail": "/thumbnails/GIO-010.png" },
+      { "fileId": "GIO-020", "fileName": "【GIO-020】品目マスタ",   "path": "/mappingexcel/【GSE-030】【GIO-020】品目マスタ.xlsx",   "thumbnail": "/thumbnails/GIO-020.png" },
+      { "fileId": "GIO-030", "fileName": "【GIO-030】品目BOM",      "path": "/mappingexcel/【GSE-なし】【GIO-030】品目BOM.xlsx",     "thumbnail": "/thumbnails/GIO-030.png" },
+      { "fileId": "GIO-040", "fileName": "【GIO-040】入出庫",       "path": "/mappingexcel/【GSE-なし】【GIO-040】入出庫.xlsx",      "thumbnail": "/thumbnails/GIO-040.png" },
+      { "fileId": "GIO-050", "fileName": "【GIO-050】出荷",         "path": "/mappingexcel/【GSE-141】【GIO-050】出荷.xlsx",         "thumbnail": "/thumbnails/GIO-050.png" },
+      { "fileId": "GIO-060", "fileName": "【GIO-060】在庫",         "path": "/mappingexcel/【GSE-なし】【GIO-060】在庫.xlsx",        "thumbnail": "/thumbnails/GIO-060.png" },
+      { "fileId": "GIO-070", "fileName": "【GIO-070】品目評価",     "path": "/mappingexcel/【GSE-120】【GIO-070】品目評価.xlsx",     "thumbnail": "/thumbnails/GIO-070.png" },
+      { "fileId": "GIO-080", "fileName": "【GIO-080】品目数量単位", "path": "/mappingexcel/【GSE-020】【GIO-080】品目数量単位.xlsx", "thumbnail": "/thumbnails/GIO-080.png" }
+    ],
+  
+    "templates1": [
+      { "fileId": "FMT-010", "fileName": "概要"            , "path": "/formatexcel/【概要】Gxxxx　案件名.xlsx",               "thumbnail": "/thumbnails/template-overview.png" },
+      { "fileId": "FMT-020", "fileName": "オブジェクト一覧", "path": "/formatexcel/【概要設計】Gxxxx　オブジェクト一覧.xlsx", "thumbnail": "/thumbnails/template-objects.png"  },
+      { "fileId": "FMT-030", "fileName": "概要設計",         "path": "/formatexcel/【概要設計】Gxxxx　案件名.xlsx",           "thumbnail": "/thumbnails/template-design.png"   }
+    ],
+  
+    "templates2": [
+      { "fileId": "FMT-000", "fileName": "ブランクシート" , "path": "/formatexcel/ブランクシート.xlsx", "thumbnail": "/thumbnails/template-white.png" }
+    ]
+  
+  }
+  

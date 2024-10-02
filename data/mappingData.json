@@ -1,0 +1,523 @@
+{
+    "GSE-020": {
+      "fileName"   : "【GSE-020】品目数量単位",
+      "tableName"  : "Z_DWH_MST_MARM",
+      "tableNameJ" : "品目数量単位",
+      "columns"    : [
+        { "colPos": 1, "filePos": 2, "hdName": "ITEM_CD",         "hdNameJ": "会社コード"     },
+        { "colPos": 2, "filePos": 3, "hdName": "CONV_UOM",        "hdNameJ": "代替数量単位"   },
+        { "colPos": 3, "filePos": 4, "hdName": "CONV_NUM_VALUE",  "hdNameJ": "換算値（分子）" },
+        { "colPos": 4, "filePos": 5, "hdName": "CONV_DEN_VALUE",  "hdNameJ": "換算値（分母）" }
+      ]
+    },
+  
+    "GSE-030": {
+      "fileName"   : "【GSE-030】品目マスタ",
+      "tableName"  : "Z_DWH_MST_ITEM",
+      "tableNameJ" : "品目マスタ",
+      "columns"    : [
+        { "colPos":  1, "filePos": 539, "hdName": "COMPANY_CD",        "hdNameJ": "会社コード"                           },
+        { "colPos":  2, "filePos":   2, "hdName": "ITEM_CD",           "hdNameJ": "品目コード"                           },
+        { "colPos":  3, "filePos": 525, "hdName": "VALUATION_CLASS",   "hdNameJ": "評価クラス"                           },
+        { "colPos":  4, "filePos":  55, "hdName": "PRODUCT_HIERARCHY", "hdNameJ": "品目階層"                             },
+        { "colPos":  5, "filePos":  14, "hdName": "BUDGET_ITEM_CD",    "hdNameJ": "予算品名コード"                       },
+        { "colPos":  6, "filePos":  76, "hdName": "SUPPLY_ORIGIN_CD",  "hdNameJ": "生産元コード"                         },
+        { "colPos":  7, "filePos":  15, "hdName": "UOM",               "hdNameJ": "基本数量単位"                         },
+        { "colPos":  8, "filePos": 477, "hdName": "SALES_UOM",         "hdNameJ": "販売単位"                             },
+        { "colPos":  9, "filePos":  32, "hdName": "NET_WEIGHT",        "hdNameJ": "正味重量"                             },
+        { "colPos": 10, "filePos":  33, "hdName": "WEIGHT_UOM",        "hdNameJ": "重量単位"                             },
+        { "colPos": 11, "filePos":  34, "hdName": "CAPACITY",          "hdNameJ": "容積"                                 },
+        { "colPos": 12, "filePos":  35, "hdName": "CAPACITY_UOM",      "hdNameJ": "容積単位"                             },
+        { "colPos": 13, "filePos":  79, "hdName": "PLANT_ITEM_STATUS", "hdNameJ": "プラント共通品目ステータス"           },
+        { "colPos": 14, "filePos":  10, "hdName": "CLIENT_DELETE_FLG", "hdNameJ": "クライアントレベルでの品目削除フラグ" }
+      ]
+    },
+  
+    "GSE-040": {
+      "fileName"   : "【GSE-040】品目テキスト",
+      "tableName"  : "Z_DWH_MST_ITEM_TEXT",
+      "tableNameJ" : "品目テキスト",
+      "columns"    : [
+        { "colPos": 1, "filePos": 2, "hdName": "ITEM_CD",      "hdNameJ": "品目コード"   },
+        { "colPos": 2, "filePos": 3, "hdName": "LANGUAGE_KEY", "hdNameJ": "言語キー"     },
+        { "colPos": 3, "filePos": 4, "hdName": "ITEM_TEXT",    "hdNameJ": "品目テキスト" }
+      ]
+    },
+  
+    "GSE-060": {
+      "fileName"   : "【GSE-060】品目階層",
+      "tableName"  : "Z_DWH_MST_ITEM_HIERARCHY",
+      "tableNameJ" : "品目階層",
+      "columns"    : [
+        { "colPos": 1, "filePos": 2, "hdName": "ITEM_HIERARCHY",      "hdNameJ": "品目階層"         },
+        { "colPos": 2, "filePos": 3, "hdName": "LEVEL_NO",            "hdNameJ": "レベル番号"       },
+        { "colPos": 3, "filePos": 4, "hdName": "LANGUAGE_KEY",        "hdNameJ": "言語キー"         },
+        { "colPos": 4, "filePos": 5, "hdName": "ITEM_HIERARCHY_TEXT", "hdNameJ": "品目階層テキスト" }
+      ]
+    },
+  
+    "GSE-070": {
+      "fileName"   : "【GSE-070】価格マスタ",
+      "tableName"  : "Z_DWH_MST_PRICE",
+      "tableNameJ" : "価格マスタ",
+      "columns"    : [
+        { "colPos": 1, "filePos":  4, "hdName": "BIS_LOCATION_CD", "hdNameJ": "事業場コード" },
+        { "colPos": 2, "filePos":  8, "hdName": "ITEM_CD",         "hdNameJ": "品目コード"   },
+        { "colPos": 3, "filePos": 28, "hdName": "UOM",             "hdNameJ": "基本数量単位" },
+        { "colPos": 4, "filePos": 24, "hdName": "PRICE_UOM",       "hdNameJ": "価格数量単位" }
+      ]
+    },
+  
+    "GSE-080": {
+      "fileName"   : "【GSE-080】ビジネスパートナーマスタ",
+      "tableName"  : "Z_DWH_MST_CUSTOMER",
+      "tableNameJ" : "ビジネスパートナーマスタ",
+      "columns"    : [
+        { "colPos": 1, "filePos": 50, "hdName": "COMPANY_CD",        "hdNameJ": "会社コード"             },
+        { "colPos": 2, "filePos":  2, "hdName": "CUSTOMER_CD",       "hdNameJ": "顧客コード"             },
+        { "colPos": 3, "filePos": 31, "hdName": "COUNTRY_CD",        "hdNameJ": "国コード"               },
+        { "colPos": 4, "filePos": 17, "hdName": "CUST_NAME1",        "hdNameJ": "顧客名称1"              },
+        { "colPos": 5, "filePos": 18, "hdName": "CUST_NAME2",        "hdNameJ": "顧客名称2"              },
+        { "colPos": 6, "filePos": 19, "hdName": "CUST_NAME3",        "hdNameJ": "顧客名称3"              },
+        { "colPos": 7, "filePos": 15, "hdName": "NATION",            "hdNameJ": "国際アドレスバージョン" },
+        { "colPos": 8, "filePos":  6, "hdName": "CENTRAL_BLOCK_FLG", "hdNameJ": "共通ブロックフラグ"     }
+      ]
+    },
+  
+    "GSE-081": {
+      "fileName"   : "【GSE-081】取引先機能マスタ",
+      "tableName"  : "Z_DWH_MST_CUST_FUNCTION",
+      "tableNameJ" : "取引先機能マスタ",
+      "columns"    : [
+        { "colPos": 1, "filePos": 9, "hdName": "COMPANY_CD",          "hdNameJ": "会社コード"       },
+        { "colPos": 2, "filePos": 2, "hdName": "CUSTOMER_CD",         "hdNameJ": "顧客コード"       },
+        { "colPos": 3, "filePos": 6, "hdName": "CUST_FUNCTION",       "hdNameJ": "取引先機能"       },
+        { "colPos": 4, "filePos": 8, "hdName": "APPLIED_CUSTOMER_CD", "hdNameJ": "取引先顧客コード" }
+      ]
+    },
+  
+    "GSE-082": {
+      "fileName"   : "【GSE-082】BPリレーションマスタ",
+      "tableName"  : "Z_DWH_MST_CUST_RELATION",
+      "tableNameJ" : "BPリレーションマスタ",
+      "columns"    : [
+        { "colPos": 1, "filePos": 4, "hdName": "PARENT_CUSTOMER_CD", "hdNameJ": "顧客コード（親）"     },
+        { "colPos": 2, "filePos": 3, "hdName": "CHILD_CUSTOMER_CD",  "hdNameJ": "顧客コード（子）"     },
+        { "colPos": 3, "filePos": 7, "hdName": "RELATION_CATEGORY",  "hdNameJ": "リレーションカテゴリ" }
+      ]
+    },
+  
+    "GSE-100": {
+      "fileName"   : "【GSE-100】営業課マスタ",
+      "tableName"  : "Z_DWH_MST_SALES_OFFICE",
+      "tableNameJ" : "営業課マスタ",
+      "columns"    : [
+        { "colPos": 1, "filePos": 9, "hdName": "COMPANY_CD",        "hdNameJ": "会社コード"   },
+        { "colPos": 2, "filePos": 5, "hdName": "SALES_OFFICE_CD",   "hdNameJ": "営業課コード" },
+        { "colPos": 3, "filePos": 2, "hdName": "BIS_LOCATION_CD",   "hdNameJ": "事業場コード" },
+        { "colPos": 4, "filePos": 7, "hdName": "LANGUAGE_KEY",      "hdNameJ": "言語キー"     },
+        { "colPos": 5, "filePos": 8, "hdName": "SALES_OFFICE_NAME", "hdNameJ": "営業課名称"   }
+      ]
+    },
+  
+    "GSE-101": {
+      "fileName"   : "【GSE-101】販売組織マスタ",
+      "tableName"  : "Z_DWH_MST_SALES_ORG",
+      "tableNameJ" : "販売組織マスタ",
+      "columns"    : [
+        { "colPos": 1, "filePos": 4, "hdName": "COMPANY_CD"     ,   "hdNameJ": "会社コード"   },
+        { "colPos": 2, "filePos": 2, "hdName": "BIS_LOCATION_CD",   "hdNameJ": "事業場コード" },
+        { "colPos": 3, "filePos": 6, "hdName": "LANGUAGE_KEY",      "hdNameJ": "言語キー"     },
+        { "colPos": 4, "filePos": 7, "hdName": "BIS_LOCATION_NAME", "hdNameJ": "事業場名称"   }
+      ]
+    },
+  
+    "GSE-110": {
+      "fileName"   : "【GSE-110】為替レートマスタ",
+      "tableName"  : "Z_DWH_MST_RATE",
+      "tableNameJ" : "為替レートマスタ",
+      "columns"    : [
+        { "colPos": 1, "filePos": 6, "hdName": "OBJECT_YEAR_MONTH", "hdNameJ": "対象年月"         },
+        { "colPos": 2, "filePos": 2, "hdName": "RATE_TYPE",         "hdNameJ": "換算レートタイプ" },
+        { "colPos": 3, "filePos": 3, "hdName": "FROM_CURRENCY_CD",  "hdNameJ": "換算前通貨コード" },
+        { "colPos": 4, "filePos": 4, "hdName": "TO_CURRENCY_CD",    "hdNameJ": "換算後通貨コード" },
+        { "colPos": 5, "filePos": 5, "hdName": "EXCHANGE_RATE",     "hdNameJ": "為替レート"       }
+      ]
+    },
+  
+    "GSE-120": {
+      "fileName"   : "【GSE-120】品目評価",
+      "tableName"  : "Z_DWH_MST_MBEW",
+      "tableNameJ" : "品目評価",
+      "columns"    : [
+        { "colPos": 1, "filePos": 76, "hdName": "COMPANY_CD",                "hdNameJ": "会社コード"                                 },
+        { "colPos": 2, "filePos":  2, "hdName": "ITEM_CD",                   "hdNameJ": "品目コード"                                 },
+        { "colPos": 3, "filePos":  3, "hdName": "VALUATION_AREA",            "hdNameJ": "評価エリアとしてのプラント"                 },
+        { "colPos": 4, "filePos":  8, "hdName": "CONTROL_KBN",               "hdNameJ": "原価管理区分"                               },
+        { "colPos": 5, "filePos": 10, "hdName": "STANDARD_COST",             "hdNameJ": "標準原価"                                   },
+        { "colPos": 6, "filePos": 28, "hdName": "PLANNED_COST",              "hdNameJ": "予定計画原価１"                             },
+        { "colPos": 7, "filePos": 11, "hdName": "PRICE_UNIT",                "hdNameJ": "価格単位"                                   },
+        { "colPos": 8, "filePos": 31, "hdName": "START_DATE",                "hdNameJ": "有効開始日"                                 },
+        { "colPos": 9, "filePos":  5, "hdName": "VALUATION_TYPE_DELETE_FLG", "hdNameJ": "評価タイプに該当する全品目データ削除フラグ" }
+      ]
+    },
+  
+    "GSE-130": {
+      "fileName"   : "【GSE-130】販売伝票",
+      "tableName"  : "Z_DWH_TRN_VBPA",
+      "tableNameJ" : "販売伝票",
+      "columns"    : [
+        { "colPos": 1, "filePos": 1, "hdName": "COMPANY_CD",          "hdNameJ": "会社コード"       },
+        { "colPos": 2, "filePos": 2, "hdName": "RO_DOC_NO",           "hdNameJ": "受注伝票番号"     },
+        { "colPos": 3, "filePos": 5, "hdName": "CUST_FUNCTION",       "hdNameJ": "取引先機能"       },
+        { "colPos": 4, "filePos": 6, "hdName": "APPLIED_CUSTOMER_CD", "hdNameJ": "取引先顧客コード" }
+      ]
+    },
+  
+    "GSE-140": {
+      "fileName"   : "【GSE-140】請求売上",
+      "tableName"  : "Z_DWH_TRN_ACTUAL",
+      "tableNameJ" : "請求売上",
+      "columns"    : [
+        { "colPos":  1, "filePos":  35, "hdName": "COMPANY_CD",         "hdNameJ": "会社コード"       },
+        { "colPos":  2, "filePos":   3, "hdName": "CHARGE_DOC_TYPE",    "hdNameJ": "請求伝票タイプ"   },
+        { "colPos":  3, "filePos": 126, "hdName": "RO_DOC_NO",          "hdNameJ": "受注伝票番号"     },
+        { "colPos":  4, "filePos": 127, "hdName": "RO_DOC_LINE_NO",     "hdNameJ": "受注伝票明細"     },
+        { "colPos":  5, "filePos":   2, "hdName": "CHARGE_DOC_NO",      "hdNameJ": "請求伝票番号"     },
+        { "colPos":  6, "filePos": 102, "hdName": "CHARGE_DOC_LINE_NO", "hdNameJ": "請求伝票明細"     },
+        { "colPos":  7, "filePos":   0, "hdName": "SHIP_DATE",          "hdNameJ": "出荷日"           },
+        { "colPos":  8, "filePos":  12, "hdName": "INVOICE_DATE",       "hdNameJ": "売上計上日"       },
+        { "colPos":  9, "filePos": 165, "hdName": "SALES_OFFICE_CD",    "hdNameJ": "営業課コード"     },
+        { "colPos": 10, "filePos": 129, "hdName": "ITEM_CD",            "hdNameJ": "品目コード"       },
+        { "colPos": 11, "filePos": 237, "hdName": "BILL_TO_CD",         "hdNameJ": "請求先コード"     },
+        { "colPos": 12, "filePos":   0, "hdName": "DEALER_CD",          "hdNameJ": "扱店コード"       },
+        { "colPos": 13, "filePos": 233, "hdName": "USER_CD",            "hdNameJ": "需要家コード"     },
+        { "colPos": 14, "filePos": 236, "hdName": "SHIP_TO_CD",         "hdNameJ": "出荷先コード"     },
+        { "colPos": 15, "filePos":   0, "hdName": "USAGE_CD",           "hdNameJ": "用途コード"       },
+        { "colPos": 16, "filePos":   0, "hdName": "SALES_COUNTRY_CD",   "hdNameJ": "販売管理国コード" },
+        { "colPos": 17, "filePos":   6, "hdName": "TRADE_CURRENCY_CD",  "hdNameJ": "取引通貨コード"   },
+        { "colPos": 18, "filePos":  60, "hdName": "RATE_TYPE",          "hdNameJ": "換算レートタイプ" },
+        { "colPos": 19, "filePos":  24, "hdName": "EXCHANGE_RATE",      "hdNameJ": "為替レート"       },
+        { "colPos": 20, "filePos": 104, "hdName": "SALES_QTY",          "hdNameJ": "販売数量"         },
+        { "colPos": 21, "filePos": 108, "hdName": "UOM",                "hdNameJ": "基本数量単位"     },
+        { "colPos": 22, "filePos": 105, "hdName": "SALES_UOM",          "hdNameJ": "販売単位"         },
+        { "colPos": 23, "filePos":   0, "hdName": "HOME_CURRENCY_AMT",  "hdNameJ": "基準通貨売上金額" },
+        { "colPos": 24, "filePos": 120, "hdName": "TRADE_CURRENCY_AMT", "hdNameJ": "取引通貨売上金額" },
+        { "colPos": 25, "filePos": 174, "hdName": "COST_AMT",           "hdNameJ": "原価金額"         },
+        { "colPos": 26, "filePos": 172, "hdName": "STORAGE_CD",         "hdNameJ": "保管場所コード"   },
+        { "colPos": 27, "filePos":   0, "hdName": "QUANTITY_PACKED",    "hdNameJ": "実入目"           },
+        { "colPos": 28, "filePos": 140, "hdName": "PLANT_CD",           "hdNameJ": "プラントコード"   },
+        { "colPos": 29, "filePos": 132, "hdName": "LOT_NO",             "hdNameJ": "ロット番号"       },
+        { "colPos": 30, "filePos":  20, "hdName": "INCOTERMS",          "hdNameJ": "インコタームズ"   },
+        { "colPos": 31, "filePos": 123, "hdName": "REF_DOC_NO",         "hdNameJ": "参照伝票番号"     },
+        { "colPos": 32, "filePos": 124, "hdName": "REF_DOC_LINE_NO",    "hdNameJ": "参照伝票明細"     }
+      ]
+    },
+  
+    "GSE-141": {
+      "fileName"   : "【GSE-141】出荷",
+      "tableName"  : "Z_DWH_TRN_DELIVERY",
+      "tableNameJ" : "出荷",
+      "columns"    : [
+        { "colPos": 1, "filePos": 485, "hdName": "COMPANY_CD",       "hdNameJ": "会社コード"     },
+        { "colPos": 2, "filePos":   2, "hdName": "SHIP_DOC_NO",      "hdNameJ": "出荷伝票番号"   },
+        { "colPos": 3, "filePos": 260, "hdName": "SHIP_DOC_LINE_NO", "hdNameJ": "出荷伝票明細"   },
+        { "colPos": 4, "filePos": 298, "hdName": "REF_DOC_NO",       "hdNameJ": "参照伝票番号"   },
+        { "colPos": 5, "filePos": 299, "hdName": "REF_DOC_LINE_NO",  "hdNameJ": "参照伝票明細"   },
+        { "colPos": 6, "filePos":  78, "hdName": "SHIP_DATE",        "hdNameJ": "出荷日"         },
+        { "colPos": 7, "filePos": 471, "hdName": "SHIP_STATUS",      "hdNameJ": "出荷ステータス" }
+      ]
+    },
+  
+    "GSE-160": {
+      "fileName"   : "【GSE-160】受注",
+      "tableName"  : "Z_DWH_TRN_ORDER",
+      "tableNameJ" : "受注",
+      "columns"    : [
+        { "colPos":  1, "filePos": 305, "hdName": "COMPANY_CD",                   "hdNameJ": "会社コード"                 },
+        { "colPos":  2, "filePos":   8, "hdName": "RO_DOC_TYPE",                  "hdNameJ": "受注伝票タイプ"             },
+        { "colPos":  3, "filePos":   2, "hdName": "RO_DOC_NO",                    "hdNameJ": "受注伝票番号"               },
+        { "colPos":  4, "filePos":  69, "hdName": "RO_DOC_LINE_NO",               "hdNameJ": "受注伝票明細"               },
+        { "colPos":  5, "filePos": 180, "hdName": "SHIP_SCHEDULE_LINE_NO",        "hdNameJ": "納入日程行"                 },
+        { "colPos":  6, "filePos": 191, "hdName": "EXPECT_SHIP_DATE",             "hdNameJ": "出荷予定日"                 },
+        { "colPos":  7, "filePos": 181, "hdName": "DELIVER_DATE",                 "hdNameJ": "納入期日"                   },
+        { "colPos":  8, "filePos":  20, "hdName": "SALES_OFFICE_CD",              "hdNameJ": "営業課コード"               },
+        { "colPos":  9, "filePos":  70, "hdName": "ITEM_CD",                      "hdNameJ": "品目コード"                 },
+        { "colPos": 10, "filePos": 173, "hdName": "BILL_TO_CD",                   "hdNameJ": "請求先コード"               },
+        { "colPos": 11, "filePos":   0, "hdName": "DEALER_CD",                    "hdNameJ": "扱店コード"                 },
+        { "colPos": 12, "filePos": 170, "hdName": "USER_CD",                      "hdNameJ": "需要家コード"               },
+        { "colPos": 13, "filePos": 172, "hdName": "SHIP_TO_CD",                   "hdNameJ": "出荷先コード"               },
+        { "colPos": 14, "filePos":   0, "hdName": "USAGE_CD",                     "hdNameJ": "用途コード"                 },
+        { "colPos": 15, "filePos":   0, "hdName": "SALES_COUNTRY_CD",             "hdNameJ": "販売管理国コード"           },
+        { "colPos": 16, "filePos":  15, "hdName": "TRADE_CURRENCY_CD",            "hdNameJ": "取引通貨コード"             },
+        { "colPos": 17, "filePos":  41, "hdName": "RATE_TYPE",                    "hdNameJ": "換算レートタイプ"           },
+        { "colPos": 18, "filePos": 211, "hdName": "EXCHANGE_RATE",                "hdNameJ": "為替レート"                 },
+        { "colPos": 19, "filePos":  99, "hdName": "RO_QTY",                       "hdNameJ": "受注総数量"                 },
+        { "colPos": 20, "filePos": 101, "hdName": "SHIP_SCHEDULE_LINE_CNFMD_QTY", "hdNameJ": "納入日程行毎確認数量"       },
+        { "colPos": 21, "filePos": 182, "hdName": "SHIP_SCHEDULE_LINE_ORDER_QTY", "hdNameJ": "納入日程行毎受注数量"       },
+        { "colPos": 22, "filePos":  12, "hdName": "SHIP_BLOCK_FLG",               "hdNameJ": "出荷ブロック"               },
+        { "colPos": 23, "filePos": 186, "hdName": "UOM",                          "hdNameJ": "基本数量単位"               },
+        { "colPos": 24, "filePos": 103, "hdName": "SALES_UOM",                    "hdNameJ": "販売単位"                   },
+        { "colPos": 25, "filePos":   0, "hdName": "HOME_CURRENCY_AMT",            "hdNameJ": "基準通貨売上金額"           },
+        { "colPos": 26, "filePos":  95, "hdName": "TRADE_CURRENCY_AMT",           "hdNameJ": "取引通貨売上金額"           },
+        { "colPos": 27, "filePos": 128, "hdName": "COST_AMT",                     "hdNameJ": "原価金額"                   },
+        { "colPos": 28, "filePos": 115, "hdName": "STORAGE_CD",                   "hdNameJ": "保管場所コード"             },
+        { "colPos": 29, "filePos":   0, "hdName": "QUANTITY_PACKED",              "hdNameJ": "実入目"                     },
+        { "colPos": 30, "filePos": 114, "hdName": "PLANT_CD",                     "hdNameJ": "プラントコード"             },
+        { "colPos": 31, "filePos":  73, "hdName": "LOT_NO",                       "hdNameJ": "ロット番号"                 },
+        { "colPos": 32, "filePos": 200, "hdName": "INCOTERMS",                    "hdNameJ": "インコタームズ"             },
+        { "colPos": 33, "filePos":  25, "hdName": "SHIP_CONDITION",               "hdNameJ": "出荷条件"                   },
+        { "colPos": 34, "filePos":   3, "hdName": "RO_DOC_REGIST_DATE",           "hdNameJ": "受注伝票登録日"             },
+        { "colPos": 35, "filePos": 227, "hdName": "CUST_ORDER_NO_HD",             "hdNameJ": "得意先発注番号（ヘッダー）" },
+        { "colPos": 36, "filePos": 279, "hdName": "CUST_ORDER_NO_MS",             "hdNameJ": "得意先発注番号（明細）"     },
+        { "colPos": 37, "filePos": 228, "hdName": "CUST_ORDER_DATE_HD",           "hdNameJ": "得意先発注日付（ヘッダー）" },
+        { "colPos": 38, "filePos": 280, "hdName": "CUST_ORDER_DATE_MS",           "hdNameJ": "得意先発注日付（明細）"     },
+        { "colPos": 39, "filePos": 210, "hdName": "CUST_GROUP_CD",                "hdNameJ": "得意先グループコード"       },
+        { "colPos": 40, "filePos":  26, "hdName": "CUST_REF_DATE_HD",             "hdNameJ": "得意先参照日付（ヘッダー）" },
+        { "colPos": 41, "filePos": 224, "hdName": "CUST_REF_DATE_MS",             "hdNameJ": "得意先参照日付（明細）"     },
+        { "colPos": 42, "filePos":  81, "hdName": "REASON_FOR_REJECTION",         "hdNameJ": "拒否理由"                   },
+        { "colPos": 43, "filePos": 226, "hdName": "APPROVAL_CD",                  "hdNameJ": "決裁コード"                 },
+        { "colPos": 44, "filePos":   9, "hdName": "ORDER_REASON_CODE",            "hdNameJ": "受注理由 (取引理由)"        },
+        { "colPos": 45, "filePos":  32, "hdName": "ORIGINAL_SALE_DATE",           "hdNameJ": "元計上日"                   }
+      ]
+    },
+  
+    "GIO-010": {
+      "fileName"   : "【GIO-010】品目テキスト",
+      "tableName"  : "F_DWH_HINMOKU_TEXT",
+      "tableNameJ" : "品目テキスト",
+      "columns"    : [
+        { "colPos": 1, "filePos": 2, "hdName": "MAKT_MATNR", "hdNameJ": "品目コード"   },
+        { "colPos": 2, "filePos": 3, "hdName": "MAKT_SPRAS", "hdNameJ": "言語キー"     },
+        { "colPos": 3, "filePos": 4, "hdName": "MAKT_MAKTX", "hdNameJ": "品目テキスト" }
+      ]
+    },
+  
+    "GIO-020": {
+      "fileName"   : "【GIO-020】品目マスタ",
+      "tableName"  : "F_DWH_HINMOKU_MAST",
+      "tableNameJ" : "品目マスタ",
+      "columns"    : [
+        { "colPos":  1, "filePos": 539, "hdName": "TVKO_BUKRS", "hdNameJ": "会社コード"                           },
+        { "colPos":  2, "filePos":   2, "hdName": "MARA_MATNR", "hdNameJ": "品目コード"                           },
+        { "colPos":  3, "filePos":  10, "hdName": "MARA_LVORM", "hdNameJ": "クライアントレベルでの品目削除フラグ" },
+        { "colPos":  4, "filePos":  11, "hdName": "MARA_MTART", "hdNameJ": "品目タイプ"                           },
+        { "colPos":  5, "filePos":  14, "hdName": "MARA_BISMT", "hdNameJ": "旧品目コード"                         },
+        { "colPos":  6, "filePos":  15, "hdName": "MARA_MEINS", "hdNameJ": "基本数量単位"                         },
+        { "colPos":  7, "filePos":  24, "hdName": "MARA_FERTH", "hdNameJ": "製造/検査メモ"                        },
+        { "colPos":  8, "filePos": 230, "hdName": "MARC_WERKS", "hdNameJ": "プラント"                             },
+        { "colPos":  9, "filePos": 231, "hdName": "MARC_LVORM", "hdNameJ": "プラントレベルでの品目削除フラグ"     },
+        { "colPos": 10, "filePos": 240, "hdName": "MARC_DISPO", "hdNameJ": "MRP 管理者"                           },
+        { "colPos": 11, "filePos": 246, "hdName": "MARC_BESKZ", "hdNameJ": "調達タイプ"                           },
+        { "colPos": 12, "filePos": 247, "hdName": "MARC_SOBSL", "hdNameJ": "特殊調達タイプ"                       },
+        { "colPos": 13, "filePos": 252, "hdName": "MARC_BSTFE", "hdNameJ": "固定ロットサイズ"                     },
+        { "colPos": 14, "filePos": 265, "hdName": "MARC_FEVOR", "hdNameJ": "製造責任者"                           },
+        { "colPos": 15, "filePos": 314, "hdName": "MARC_LGPRO", "hdNameJ": "出庫保管場所"                         },
+        { "colPos": 16, "filePos": 338, "hdName": "MARC_KZKUP", "hdNameJ": "区分: 連産品としても使用可能な品目"   },
+        { "colPos": 17, "filePos": 341, "hdName": "MARC_LGFSB", "hdNameJ": "外部調達の初期保管場所"               },
+        { "colPos": 18, "filePos": 522, "hdName": "MBEW_BWTAR", "hdNameJ": "評価タイプ"                           },
+        { "colPos": 19, "filePos": 525, "hdName": "MBEW_BKLAS", "hdNameJ": "評価クラス"                           },
+        { "colPos": 20, "filePos": 530, "hdName": "MBEW_LFGJA", "hdNameJ": "当会計年度"                           },
+        { "colPos": 21, "filePos": 531, "hdName": "MBEW_LFMON", "hdNameJ": "当期 (転記期間)"                      },
+        { "colPos": 22, "filePos":  76, "hdName": "MARA_EXTWG", "hdNameJ": "外部品目グループ"                     }
+      ]
+    },
+  
+    "GIO-030": {
+      "fileName"   : "【GIO-030】品目BOM",
+      "tableName"  : "F_DWH_HINMOKU_BOM",
+      "tableNameJ" : "品目BOM",
+      "columns"    : [
+        { "colPos":  1, "filePos": 83, "hdName": "TVKO_BUKRS", "hdNameJ": "会社コード"                   },
+        { "colPos":  2, "filePos":  2, "hdName": "MAST_MATNR", "hdNameJ": "品目コード"                   },
+        { "colPos":  3, "filePos":  3, "hdName": "MAST_WERKS", "hdNameJ": "プラント"                     },
+        { "colPos":  4, "filePos":  6, "hdName": "MAST_STLAL", "hdNameJ": "代替 BOM"                     },
+        { "colPos":  5, "filePos": 24, "hdName": "STKO_BMEIN", "hdNameJ": "BOM の基本数量単位"           },
+        { "colPos":  6, "filePos": 25, "hdName": "STKO_BMENG", "hdNameJ": "基本数量"                     },
+        { "colPos":  7, "filePos": 41, "hdName": "STPO_IDNRK", "hdNameJ": "BOM 構成品目"                 },
+        { "colPos":  8, "filePos": 42, "hdName": "STPO_PSWRK", "hdNameJ": "出庫プラント"                 },
+        { "colPos":  9, "filePos": 43, "hdName": "STPO_POSTP", "hdNameJ": "明細カテゴリ (部品表/配合表)" },
+        { "colPos": 10, "filePos": 44, "hdName": "STPO_POSNR", "hdNameJ": "BOM 明細番号"                 },
+        { "colPos": 11, "filePos": 46, "hdName": "STPO_MEINS", "hdNameJ": "構成品目数量単位"             },
+        { "colPos": 12, "filePos": 47, "hdName": "STPO_MENGE", "hdNameJ": "構成品目数量"                 },
+        { "colPos": 13, "filePos": 48, "hdName": "STPO_FMENG", "hdNameJ": "固定数量"                     },
+        { "colPos": 14, "filePos": 63, "hdName": "STPO_REKRS", "hdNameJ": "区分: 循環性許可"             },
+        { "colPos": 15, "filePos": 65, "hdName": "STPO_NLFZT", "hdNameJ": "リードタイムオフセット"       },
+        { "colPos": 16, "filePos":  4, "hdName": "",           "hdNameJ": ""                             }
+      ]
+    },
+  
+    "GIO-040": {
+      "fileName"   : "【GIO-040】入出庫",
+      "tableName"  : "F_DWH_NSK",
+      "tableNameJ" : "入出庫",
+      "columns"    : [
+        { "colPos":  1, "filePos": 17, "hdName": "MATDOC_BUKRS",     "hdNameJ": "会社コード"            },
+        { "colPos":  2, "filePos": 46, "hdName": "MATDOC_SJAHR",     "hdNameJ": "入出庫伝票年"          },
+        { "colPos":  3, "filePos": 39, "hdName": "MATDOC_BUDAT",     "hdNameJ": "伝票の転記日付"        },
+        { "colPos":  4, "filePos": 45, "hdName": "MATDOC_MBLNR",     "hdNameJ": "入出庫伝票番号"        },
+        { "colPos":  5, "filePos": 47, "hdName": "MATDOC_ZEILE",     "hdNameJ": "入出庫伝票の明細"      },
+        { "colPos":  6, "filePos": 72, "hdName": "MATDOC_URZEI",     "hdNameJ": "入出庫伝票の元明細"    },
+        { "colPos":  7, "filePos": 78, "hdName": "MATDOC_BWART",     "hdNameJ": "移動タイプ (在庫管理)" },
+        { "colPos":  8, "filePos": 79, "hdName": "MATDOC_MATNR",     "hdNameJ": "品目コード"            },
+        { "colPos":  9, "filePos":  5, "hdName": "MATDOC_WERKS",     "hdNameJ": "プラント"              },
+        { "colPos": 10, "filePos": 84, "hdName": "MATDOC_LIFNR",     "hdNameJ": "仕入先勘定コード"      },
+        { "colPos": 11, "filePos": 86, "hdName": "MATDOC_SHKZG",     "hdNameJ": "借方/貸方フラグ"       },
+        { "colPos": 12, "filePos": 29, "hdName": "MATDOC_MENGE",     "hdNameJ": "数量"                  },
+        { "colPos": 13, "filePos": 28, "hdName": "MATDOC_MEINS",     "hdNameJ": "基本数量単位"          },
+        { "colPos": 14, "filePos": 51, "hdName": "MATDOC_EBELN",     "hdNameJ": "購買発注番号"          },
+        { "colPos": 15, "filePos": 52, "hdName": "MATDOC_EBELP",     "hdNameJ": "購買伝票の明細番号"    },
+        { "colPos": 16, "filePos": 90, "hdName": "MATDOC_KOSTL",     "hdNameJ": "原価センタ"            },
+        { "colPos": 17, "filePos": 99, "hdName": "MATDOC_UMWRK",     "hdNameJ": "入庫／出庫プラント"    },
+        { "colPos": 18, "filePos": 59, "hdName": "MATDOC_AUFNR",     "hdNameJ": "指図番号"              },
+        { "colPos": 19, "filePos":  6, "hdName": "MATDOC_LGORT_SID", "hdNameJ": "保管場所 (在庫 ID)"    },
+        { "colPos": 20, "filePos": 14, "hdName": "MATDOC_LBBSA_SID", "hdNameJ": "在庫タイプ (在庫 ID)"  },
+        { "colPos": 21, "filePos": 91, "hdName": "MATDOC_UMMAT",     "hdNameJ": "入庫／出庫品目"        },
+        { "colPos": 22, "filePos": 74, "hdName": "MATDOC_VBELN_IM",  "hdNameJ": "出荷伝票"              },
+        { "colPos": 23, "filePos": 75, "hdName": "MATDOC_VBELP_IM",  "hdNameJ": "出荷明細"              }
+      ]
+    },
+  
+    "GIO-050": {
+      "fileName"   : "【GIO-050】出荷",
+      "tableName"  : "F_DWH_SYUKKA",
+      "tableNameJ" : "出荷",
+      "columns"    : [
+        { "colPos":  1, "filePos": 485, "hdName": "TVKO_BUKRS",  "hdNameJ": "会社コード"              },
+        { "colPos":  2, "filePos":   8, "hdName": "LIKP_VKORG",  "hdNameJ": "販売組織"                },
+        { "colPos":  3, "filePos": 482, "hdName": "VBPA_KUNNR2", "hdNameJ": "得意先コード"            },
+        { "colPos":  4, "filePos":  28, "hdName": "LIKP_KUNAG",  "hdNameJ": "受注先"                  },
+        { "colPos":  5, "filePos": 265, "hdName": "LIPS_MATNR",  "hdNameJ": "品目コード"              },
+        { "colPos":  6, "filePos":  42, "hdName": "LIKP_FKDAT",  "hdNameJ": "請求日付"                },
+        { "colPos":  7, "filePos": 268, "hdName": "LIPS_WERKS",  "hdNameJ": "プラント"                },
+        { "colPos":  8, "filePos": 275, "hdName": "LIPS_MEINS",  "hdNameJ": "基本数量単位"            },
+        { "colPos":  9, "filePos": 484, "hdName": "VBPA_LAND1",  "hdNameJ": "国コード"                },
+        { "colPos": 10, "filePos": 291, "hdName": "LIPS_LGMNG",  "hdNameJ": "出荷数量実績 (在庫単位)" },
+        { "colPos": 11, "filePos":  41, "hdName": "LIPS_FKARV",  "hdNameJ": "提案請求伝票タイプ"      },
+        { "colPos": 12, "filePos": 326, "hdName": "VKBUR_LIPS",  "hdNameJ": "営業所"                  },
+        { "colPos": 13, "filePos":   2, "hdName": "VBELN",       "hdNameJ": "出荷伝票"                },
+        { "colPos": 14, "filePos": 260, "hdName": "POSNR",       "hdNameJ": "出荷明細"                }
+      ]
+    },
+  
+    "GIO-060": {
+      "fileName"   : "【GIO-060】在庫",
+      "tableName"  : "F_DWH_ZAIKO",
+      "tableNameJ" : "在庫",
+      "columns"    : [
+        { "colPos":  1, "filePos":  2, "hdName": "MATDOC_EXTRACT_BUKRS",     "hdNameJ": "会社コード"                     },
+        { "colPos":  2, "filePos":  3, "hdName": "MATDOC_EXTRACT_MATBF",     "hdNameJ": "在庫品目管理"                   },
+        { "colPos":  3, "filePos":  4, "hdName": "MATDOC_EXTRACT_WERKS",     "hdNameJ": "プラント"                       },
+        { "colPos":  4, "filePos":  5, "hdName": "MATDOC_EXTRACT_LGORT_SID", "hdNameJ": "保管場所 (在庫 ID)"             },
+        { "colPos":  5, "filePos":  6, "hdName": "MATDOC_EXTRACT_CHARG_SID", "hdNameJ": "ロット番号 (在庫 ID)"           },
+        { "colPos":  6, "filePos":  7, "hdName": "MATDOC_EXTRACT_LIFNR_SID", "hdNameJ": "特殊在庫の仕入先"               },
+        { "colPos":  7, "filePos":  8, "hdName": "MATDOC_EXTRACT_MAT_KDAUF", "hdNameJ": "評価受注在庫の受注番号"         },
+        { "colPos":  8, "filePos":  9, "hdName": "MATDOC_EXTRACT_MAT_KDPOS", "hdNameJ": "評価受注在庫の受注明細"         },
+        { "colPos":  9, "filePos": 10, "hdName": "MATDOC_EXTRACT_MAT_PSPNR", "hdNameJ": "評価済受注在庫 WBS 要素"        },
+        { "colPos": 10, "filePos": 11, "hdName": "MATDOC_EXTRACT_KUNNR_SID", "hdNameJ": "特殊在庫の得意先"               },
+        { "colPos": 11, "filePos": 12, "hdName": "MATDOC_EXTRACT_SOBKZ",     "hdNameJ": "特殊在庫区分"                   },
+        { "colPos": 12, "filePos": 13, "hdName": "MATDOC_EXTRACT_LBBSA_SID", "hdNameJ": "在庫移動の在庫タイプ (在庫 ID)" },
+        { "colPos": 13, "filePos": 15, "hdName": "MATDOC_EXTRACT_GJPER",     "hdNameJ": "期間/年度"                      },
+        { "colPos": 14, "filePos": 17, "hdName": "STOCK_QTY_L1",             "hdNameJ": "月末在庫数量"                   },
+        { "colPos": 15, "filePos": 16, "hdName": "YEAR_MONTH",               "hdNameJ": "年月"                           },
+        { "colPos": 16, "filePos": 18, "hdName": "MATDOC_EXTRACT_MEINS",     "hdNameJ": "基本数量単位"                   }
+      ]
+    },
+  
+    "GIO-070": {
+      "fileName"   : "【GIO-070】品目評価",
+      "tableName"  : "F_DWH_GENKA",
+      "tableNameJ" : "品目評価",
+      "columns"    : [
+        { "colPos":  1, "filePos": 76, "hdName": "T001K_BUKRS",  "hdNameJ": "会社コード"                                        },
+        { "colPos":  2, "filePos":  1, "hdName": "MBEW_MANDT",   "hdNameJ": "クライアント"                                      },
+        { "colPos":  3, "filePos":  2, "hdName": "MBEW_MATNR",   "hdNameJ": "品目コード"                                        },
+        { "colPos":  4, "filePos":  3, "hdName": "MBEW_BWKEY",   "hdNameJ": "評価レベル"                                        },
+        { "colPos":  5, "filePos":  4, "hdName": "MBEW_BWTAR",   "hdNameJ": "評価タイプ"                                        },
+        { "colPos":  6, "filePos":  5, "hdName": "MBEW_LVORM",   "hdNameJ": "評価タイプに該当する全品目データ削除フラグ"        },
+        { "colPos":  7, "filePos":  6, "hdName": "MBEW_LBKUM",   "hdNameJ": "評価在庫合計"                                      },
+        { "colPos":  8, "filePos":  7, "hdName": "MBEW_SALK3",   "hdNameJ": "評価在庫合計額"                                    },
+        { "colPos":  9, "filePos":  8, "hdName": "MBEW_VPRSV",   "hdNameJ": "原価管理区分"                                      },
+        { "colPos": 10, "filePos":  9, "hdName": "MBEW_VERPR",   "hdNameJ": "移動平均原価/期間単位価格"                         },
+        { "colPos": 11, "filePos": 10, "hdName": "MBEW_STPRS",   "hdNameJ": "標準原価"                                          },
+        { "colPos": 12, "filePos": 11, "hdName": "MBEW_PEINH",   "hdNameJ": "価格単位"                                          },
+        { "colPos": 13, "filePos": 12, "hdName": "MBEW_BKLAS",   "hdNameJ": "評価クラス"                                        },
+        { "colPos": 14, "filePos": 13, "hdName": "MBEW_SALKV",   "hdNameJ": "移動平均原価に基づく価額 (標準原価管理のみで使用)" },
+        { "colPos": 15, "filePos": 14, "hdName": "MBEW_LFGJA",   "hdNameJ": "当会計年度"                                        },
+        { "colPos": 16, "filePos": 15, "hdName": "MBEW_LFMON",   "hdNameJ": "当期 (転記期間)"                                   },
+        { "colPos": 17, "filePos": 16, "hdName": "MBEW_BWTTY",   "hdNameJ": "評価カテゴリ"                                      },
+        { "colPos": 18, "filePos": 17, "hdName": "MBEW_LAEPR",   "hdNameJ": "前回原価変更日"                                    },
+        { "colPos": 19, "filePos": 18, "hdName": "MBEW_ZKPRS",   "hdNameJ": "次期標準原価"                                      },
+        { "colPos": 20, "filePos": 19, "hdName": "MBEW_ZKDAT",   "hdNameJ": "原価有効開始日"                                    },
+        { "colPos": 21, "filePos": 20, "hdName": "MBEW_BWPRS",   "hdNameJ": "税法による評価額: レベル１"                        },
+        { "colPos": 22, "filePos": 21, "hdName": "MBEW_BWPRH",   "hdNameJ": "商法による評価額: レベル 1"                        },
+        { "colPos": 23, "filePos": 22, "hdName": "MBEW_VJBWS",   "hdNameJ": "税法基準評価額: レベル 3"                          },
+        { "colPos": 24, "filePos": 23, "hdName": "MBEW_VJBWH",   "hdNameJ": "商法基準評価額: レベル 3"                          },
+        { "colPos": 25, "filePos": 24, "hdName": "MBEW_VVJSL",   "hdNameJ": "前々年度全評価在庫額"                              },
+        { "colPos": 26, "filePos": 25, "hdName": "MBEW_VVJLB",   "hdNameJ": "1 昨年度評価在庫合計"                              },
+        { "colPos": 27, "filePos": 26, "hdName": "MBEW_VVMLB",   "hdNameJ": "1 昨年度評価在庫合計"                              },
+        { "colPos": 28, "filePos": 27, "hdName": "MBEW_ZPLPR",   "hdNameJ": "次期予定価格"                                      },
+        { "colPos": 29, "filePos": 28, "hdName": "MBEW_ZPLP1",   "hdNameJ": "予定計画原価 1"                                    },
+        { "colPos": 30, "filePos": 29, "hdName": "MBEW_ZPLP2",   "hdNameJ": "予定計画原価 2"                                    },
+        { "colPos": 31, "filePos": 30, "hdName": "MBEW_ZPLP3",   "hdNameJ": "予定計画原価 3"                                    },
+        { "colPos": 32, "filePos": 31, "hdName": "MBEW_ZPLD1",   "hdNameJ": "予定原価 1 の有効開始日"                           },
+        { "colPos": 33, "filePos": 32, "hdName": "MBEW_ZPLD2",   "hdNameJ": "予定原価 2 の有効開始日"                           },
+        { "colPos": 34, "filePos": 33, "hdName": "MBEW_ZPLD3",   "hdNameJ": "予定原価 3 の有効開始日"                           },
+        { "colPos": 35, "filePos": 34, "hdName": "MBEW_KALKZ",   "hdNameJ": "区分: 予定標準原価見積"                            },
+        { "colPos": 36, "filePos": 35, "hdName": "MBEW_KALKL",   "hdNameJ": "当期の標準原価見積"                                },
+        { "colPos": 37, "filePos": 36, "hdName": "MBEW_KALKV",   "hdNameJ": "区分: 前期標準原価計算"                            },
+        { "colPos": 38, "filePos": 37, "hdName": "MBEW_KALSC",   "hdNameJ": "間接費キー"                                        },
+        { "colPos": 39, "filePos": 38, "hdName": "MBEW_XLIFO",   "hdNameJ": "LIFO/FIFO - 関連"                                  },
+        { "colPos": 40, "filePos": 39, "hdName": "MBEW_MYPOL",   "hdNameJ": "LIFO 評価でのプール番号"                           },
+        { "colPos": 41, "filePos": 40, "hdName": "MBEW_BWPH1",   "hdNameJ": "商法による評価額: レベル 2"                        },
+        { "colPos": 42, "filePos": 41, "hdName": "MBEW_BWPS1",   "hdNameJ": "税法による評価額: レベル 2"                        },
+        { "colPos": 43, "filePos": 42, "hdName": "MBEW_ABWKZ",   "hdNameJ": "低価法: 評価減区分"                                },
+        { "colPos": 44, "filePos": 43, "hdName": "MBEW_PSTAT",   "hdNameJ": "更新ステータス"                                    },
+        { "colPos": 45, "filePos": 44, "hdName": "MBEW_KALN1",   "hdNameJ": "原価見積番号 - 原価積上"                           },
+        { "colPos": 46, "filePos": 45, "hdName": "MBEW_KALNR",   "hdNameJ": "原価見積 (数量構成なし) の原価見積番号"            },
+        { "colPos": 47, "filePos": 46, "hdName": "MBEW_BWVA1",   "hdNameJ": "次期標準原価見積の評価バリアント"                  },
+        { "colPos": 48, "filePos": 47, "hdName": "MBEW_BWVA2",   "hdNameJ": "当期標準原価見積の評価バリアント"                  },
+        { "colPos": 49, "filePos": 48, "hdName": "MBEW_BWVA3",   "hdNameJ": "前期標準原価見積の評価バリアント"                  },
+        { "colPos": 50, "filePos": 49, "hdName": "MBEW_VERS2",   "hdNameJ": "当期標準原価見積の原価計算バージョン"              },
+        { "colPos": 51, "filePos": 50, "hdName": "MBEW_HRKFT",   "hdNameJ": "発生源グループ (原価要素の下位区分)"               },
+        { "colPos": 52, "filePos": 51, "hdName": "MBEW_KOSGR",   "hdNameJ": "原価計算間接費グループ"                            },
+        { "colPos": 53, "filePos": 52, "hdName": "MBEW_EKALR",   "hdNameJ": "数量構成により原価計算を行う品目"                  },
+        { "colPos": 54, "filePos": 53, "hdName": "MBEW_VPLPR",   "hdNameJ": "前予定価格"                                        },
+        { "colPos": 55, "filePos": 54, "hdName": "MBEW_MLMAA",   "hdNameJ": "品目レベルで有効な品目元帳"                        },
+        { "colPos": 56, "filePos": 55, "hdName": "MBEW_MLAST",   "hdNameJ": "品目元帳決済: 管理"                                },
+        { "colPos": 57, "filePos": 56, "hdName": "MBEW_LPLPR",   "hdNameJ": "現計画原価"                                        },
+        { "colPos": 58, "filePos": 57, "hdName": "MBEW_VKSAL",   "hdNameJ": "評価在庫合計金額 (販売価格)"                       },
+        { "colPos": 59, "filePos": 58, "hdName": "MBEW_HKMAT",   "hdNameJ": "品目関連発生源"                                    },
+        { "colPos": 60, "filePos": 59, "hdName": "MBEW_SPERW",   "hdNameJ": "実地棚卸保留区分"                                  },
+        { "colPos": 61, "filePos": 60, "hdName": "MBEW_KZIWL",   "hdNameJ": "金額管理品目の実地棚卸区分"                        },
+        { "colPos": 62, "filePos": 61, "hdName": "MBEW_WLINL",   "hdNameJ": "転記済の最終棚卸検数実施日"                        },
+        { "colPos": 63, "filePos": 62, "hdName": "MBEW_ABCIW",   "hdNameJ": "循環棚卸の実地棚卸区分"                            },
+        { "colPos": 64, "filePos": 63, "hdName": "MBEW_BWSPA",   "hdNameJ": "評価利益"                                          },
+        { "colPos": 65, "filePos": 64, "hdName": "MBEW_LPLPX",   "hdNameJ": "現計画価格の固定部分"                              },
+        { "colPos": 66, "filePos": 65, "hdName": "MBEW_VPLPX",   "hdNameJ": "前計画価格の固定部分"                              },
+        { "colPos": 67, "filePos": 66, "hdName": "MBEW_FPLPX",   "hdNameJ": "次期計画価格の固定部分"                            },
+        { "colPos": 68, "filePos": 67, "hdName": "MBEW_LBWST",   "hdNameJ": "現計画価格の評価方針、受注/プロジェクト在庫"       },
+        { "colPos": 69, "filePos": 68, "hdName": "MBEW_VBWST",   "hdNameJ": "前計画価格、特殊在庫の評価方針"                    },
+        { "colPos": 70, "filePos": 69, "hdName": "MBEW_FBWST",   "hdNameJ": "次期計画価格の評価方針: 特殊在庫"                  },
+        { "colPos": 71, "filePos": 70, "hdName": "MBEW_EKLAS",   "hdNameJ": "受注在庫の評価クラス"                              },
+        { "colPos": 72, "filePos": 71, "hdName": "MBEW_QKLAS",   "hdNameJ": "プロジェクト在庫の評価クラス"                      },
+        { "colPos": 73, "filePos": 72, "hdName": "MBEW_MTUSE",   "hdNameJ": "品目の用途"                                        },
+        { "colPos": 74, "filePos": 73, "hdName": "MBEW_BWPEI",   "hdNameJ": "税法/商法にもとづく評価額価格単位"                 },
+        { "colPos": 75, "filePos": 74, "hdName": "MBEW_OKLAS",   "hdNameJ": "評価クラス: 仕入先の特殊在庫"                      },
+        { "colPos": 76, "filePos": 75, "hdName": "MBEW_OIPPINV", "hdNameJ": "品目評価タイプセグメントの前払い在庫"              }
+      ]
+    },
+  
+    "GIO-080": {
+      "fileName"   : "【GIO-080】品目数量単位",
+      "tableName"  : "F_DWH_HINMOKU_SURYOU_TANI",
+      "tableNameJ" : "品目数量単位",
+      "columns"    : [
+        { "colPos": 1, "filePos": 2, "hdName": "MARM_MATNR", "hdNameJ": "品目コード"     },
+        { "colPos": 2, "filePos": 3, "hdName": "MARM_MEINH", "hdNameJ": "代替数量単位"   },
+        { "colPos": 3, "filePos": 4, "hdName": "MARM_UMREZ", "hdNameJ": "換算値（分子）" },
+        { "colPos": 4, "filePos": 5, "hdName": "MAST_UMREN", "hdNameJ": "換算値（分母）" }
+      ]
+    }
+  }
+  
