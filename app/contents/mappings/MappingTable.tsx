@@ -1,7 +1,7 @@
 // /app/contents/mappings/MappingTable.tsx
 
 import React, { useState, useEffect } from 'react';
-import { MappingData } from './types';
+import { MappingData } from './types'; // MappingData の型定義をインポート
 
 interface MappingModalProps {
     onClose: () => void;
@@ -160,3 +160,4 @@ const MappingModal: React.FC<MappingModalProps> = ({ onClose, onApplyTemporaryMa
 };
 
 export default MappingModal;
+

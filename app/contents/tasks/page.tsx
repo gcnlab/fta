@@ -1,23 +1,16 @@
-// /app/contents/wizards/page.tsx
+// /app/contents/tasks/page.tsx
 
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { MainButton } from "@/app/components/MainButton";
 import { WhitePanel } from "@/app/components/WhitePanel";
 
 export default function Page() {
-  const router = useRouter();
-  const [selectedWizard, setSelectedWizard] = useState<string | null>("dummy");
   const [selectedTool, setSelectedTool] = useState<string | null>(null); // 選択されたボタンの状態
   const [activeToggle, setActiveToggle] = useState<string | null>(null); // アクティブなトグルボタンのラベル
 
-  const SELECTED_TOOL_KEY = 'selectedToolWizards';
-
-  const handleButtonClick = (toolName: string) => {
-    setSelectedTool(toolName); // ボタンが押されたときに状態を更新
-  };
+  const SELECTED_TOOL_KEY = 'selectedToolTasks';
 
   const handleToggle = (toolName: string) => {
     if (activeToggle === toolName) {
@@ -33,43 +26,47 @@ export default function Page() {
     }
   };
 
-    // ページが読み込まれたときに localStorage から状態を復元
-    useEffect(() => {
-      const savedTool = localStorage.getItem(SELECTED_TOOL_KEY);
-      if (savedTool) {
-        setSelectedTool(savedTool);
-        setActiveToggle(savedTool);
-      }
-    }, []);
-  
+  // ページが読み込まれたときに localStorage から状態を復元
+  useEffect(() => {
+    const savedTool = localStorage.getItem(SELECTED_TOOL_KEY);
+    if (savedTool) {
+      setSelectedTool(savedTool);
+      setActiveToggle(savedTool);
+    }
+  }, []);
+
   return (
     <main className="bg-gray-100">
       <div className="mb-2 p-4 bg-white shadow-lg rounded-md border border-gray-300">
-        <h1 className="text-base font-semibold text-gray-700 mb-4 text-left">Wizards</h1>
+        <h1 className="text-base font-semibold text-gray-700 mb-4 text-left">Tasks</h1>
 
         {/* ボタンパネル */}
         <div className="grid grid-cols-5 gap-2">
-          {/* 本番移行手順書作成ボタン */}
-          <MainButton label="本番移行手順書作成" isNavigation onClickAction={() => router.push("/contents/wizards/ReleaseManual")} />
-
-          {/* TEST */}
+          {/* 問い合せ一覧 (トグルボタン) */}
           <MainButton
-            label="TEST"
+            label="問い合せ一覧"
             isToggle={true}
-            isActive={activeToggle === "TEST"}
-            onToggle={() => handleToggle("TEST")}
+            isActive={activeToggle === "問い合せ一覧"}
+            onToggle={() => handleToggle("問い合せ一覧")}
           />
 
           {/* ダミーボタン */}
           <MainButton label="" isDummy={true} />
 
-          {/* ダミーボタン */}
-          {[...Array(7)].map((_, index) => (
-            <MainButton key={index} label="&nbsp;" isDummy={true} />
+          {/* ダミーボタン (8つ) */}
+          {[...Array(8)].map((_, index) => (
+            <MainButton
+              key={index}
+              label="&nbsp;"
+              isDummy={true}
+              onClickAction={() => {
+                // ダミーボタンをクリックしても何も起こらないように
+                // 必要に応じて他のアクションを追加できます
+              }}
+            />
           ))}
         </div>
 
-        {/* ダミーコンテンツ */}
         {/* 選択されたツールに基づいてWhitePanelを表示 */}
         <div className="h-auto min-h-64 mt-4 p-4 bg-gray-100 rounded-md border border-gray-300">
           {selectedTool && (
@@ -83,4 +80,3 @@ export default function Page() {
     </main>
   );
 }
-

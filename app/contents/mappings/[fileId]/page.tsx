@@ -38,6 +38,24 @@ export default function MappingPage() {
 
     const [isTemporaryMapping, setIsTemporaryMapping] = useState(false); // 一時的マッピング適用フラグ
 
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        if (e.key === 'Tab') {
+            e.preventDefault(); // デフォルトのタブ移動を防止
+            const textarea = e.target as HTMLTextAreaElement;
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+    
+            // タブ文字を挿入
+            const newValue = inputData.substring(0, start) + '\t' + inputData.substring(end);
+            setInputData(newValue);
+    
+            // カーソル位置をタブ文字の後に設定
+            setTimeout(() => {
+                textarea.selectionStart = textarea.selectionEnd = start + 1;
+            }, 0);
+        }
+    };
+
     // 一時的マッピング適用時の処理
     const handleApplyTemporaryMapping = (updatedMappingData: MappingData) => {
         setMappingData(updatedMappingData);            // マッピングデータを更新
@@ -49,16 +67,61 @@ export default function MappingPage() {
 
     // ファイルIDに基づいてマッピングデータを取得
     useEffect(() => {
-        if (fileId) {
-            setLoading(true);
-            fetch(`/api/getMappingData?fileId=${fileId}`)
-                .then((res) => res.json())
-                .then((data: MappingData) => setMappingData(data))
-                .catch((err) => console.error('Error fetching mapping data', err))
-                .finally(() => setLoading(false));
-        }
+        const loadMappingData = async () => {
+            if (fileId) {
+                setLoading(true);
+                try {
+                    let data: MappingData;
+    
+                    if (fileId === 'user-mapping') {
+                        // 'user-mapping'の場合はローカルストレージから取得
+                        const userMappingJSON = localStorage.getItem('userMappingMappingPage');
+                        if (userMappingJSON) {
+                            const userMapping: MappingData = JSON.parse(userMappingJSON);
+    
+                            // 必須プロパティの確認とデフォルト値の設定
+                            if (!userMapping.fileName) userMapping.fileName = 'user-mapping';
+                            if (!userMapping.tableName) userMapping.tableName = 'user-table';
+                            if (!userMapping.tableNameJ) userMapping.tableNameJ = 'ユーザテーブル';
+                            if (!userMapping.columns) userMapping.columns = [];
+    
+                            data = userMapping;
+                        } else {
+                            alert("ユーザーマッピングデータが存在しません。");
+                            setMappingData(null);
+                            return;
+                        }
+                    } else {
+                        // それ以外の場合はAPIから取得
+                        const res = await fetch(`/api/getMappingData?fileId=${fileId}`);
+                        if (!res.ok) {
+                            throw new Error(`HTTP error! status: ${res.status}`);
+                        }
+                        const fetchedData: MappingData = await res.json();
+    
+                        // 必須プロパティの確認とデフォルト値の設定
+                        if (!fetchedData.fileName) fetchedData.fileName = 'unknown';
+                        if (!fetchedData.tableName) fetchedData.tableName = 'unknown-table';
+                        if (!fetchedData.tableNameJ) fetchedData.tableNameJ = '未知のテーブル';
+                        if (!fetchedData.columns) fetchedData.columns = [];
+    
+                        data = fetchedData; // APIから取得したデータのみを使用
+                    }
+    
+                    setMappingData(data);
+                } catch (err) {
+                    console.error('Error fetching mapping data:', err);
+                    alert("マッピングデータの取得に失敗しました。");
+                    setMappingData(null);
+                } finally {
+                    setLoading(false);
+                }
+            }
+        };
+    
+        loadMappingData();
     }, [fileId]);
-
+    
     // テキストボックスに貼り付けられたデータを処理
     const handlePaste = (e: React.ClipboardEvent<HTMLTextAreaElement>) => {
         const pastedData = e.clipboardData.getData('Text');
@@ -273,16 +336,27 @@ export default function MappingPage() {
 
     // マッピングデータを再取得して設定する関数を async に変更
     const reloadMappingData = async (): Promise<MappingData | null> => {
-        if (fileId) {
+        if (fileId && fileId !== 'user-mapping') {
             setLoading(true);
             try {
                 const res = await fetch(`/api/getMappingData?fileId=${fileId}`);
-                const data: MappingData = await res.json();
-                setMappingData(data); // マッピングデータを再取得して設定
+                if (!res.ok) {
+                    throw new Error(`HTTP error! status: ${res.status}`);
+                }
+                const fetchedData: MappingData = await res.json();
+
+                // 必須プロパティの確認とデフォルト値の設定
+                if (!fetchedData.fileName) fetchedData.fileName = 'unknown';
+                if (!fetchedData.tableName) fetchedData.tableName = 'unknown-table';
+                if (!fetchedData.tableNameJ) fetchedData.tableNameJ = '未知のテーブル';
+                if (!fetchedData.columns) fetchedData.columns = [];
+
+                setMappingData(fetchedData); // マッピングデータを再取得して設定
                 setIsTemporaryMapping(false); // 一時マッピングフラグをリセット
-                return data;
+                return fetchedData;
             } catch (err) {
                 console.error('Error fetching mapping data', err);
+                alert("マッピングデータの取得に失敗しました。");
                 return null;
             } finally {
                 setLoading(false);
@@ -313,9 +387,10 @@ export default function MappingPage() {
                 className="w-full h-40 p-1 border border-gray-300 mb-0 text-xs overflow-x-auto"
                 style={{ whiteSpace: 'nowrap', fontFamily: 'monospace' }} // 横スクロールを適用
                 value={inputData}
+                onKeyDown={handleKeyDown}
                 onChange={(e) => setInputData(e.target.value)}
                 onPaste={handlePaste} // ペーストイベントを監視
-                placeholder={`ここにテキストを貼り付けてください (最大${MAX_ROWS}行)`}
+                placeholder={`表データ（タブ区切り）を貼り付けてください (最大${MAX_ROWS}行)`}
             ></textarea>
 
             {/* ボタン群を左右に分けるためのフレックスコンテナ */}

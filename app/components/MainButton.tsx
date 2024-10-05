@@ -36,7 +36,7 @@ export const MainButton: React.FC<MainButtonProps> = ({
     } else if (onClickAction) {
       onClickAction();  // 指定されたアクションを実行
     } else {
-      router.push('/contents/wizards/migration');  // デフォルトの画面遷移
+      //router.push('/contents/wizards/ReleaseManual');  // デフォルトの画面遷移
     }
   };
 
@@ -71,3 +71,4 @@ export const MainButton: React.FC<MainButtonProps> = ({
     </button>
   );
 };
+

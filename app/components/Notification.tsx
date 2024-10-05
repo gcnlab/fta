@@ -36,3 +36,4 @@ const Notification: React.FC<NotificationProps> = ({ message, visible, onClose }
 };
 
 export default React.memo(Notification);
+
