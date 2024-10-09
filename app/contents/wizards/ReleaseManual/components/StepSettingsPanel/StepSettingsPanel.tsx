@@ -4,9 +4,9 @@ import React from 'react';
 import { Step, StepDetails, StepType } from '../../types';
 
 // 手順タイプごとのコンポーネントをインポート
-import HD_BK_PRE from './steps/HD BK_PRE';
-import HD_BK from './steps/HD BK';
-import HD_RL from './steps/HD RL';
+import HD_BK_PRE from './steps/HD_BK_PRE';
+import HD_BK from './steps/HD_BK';
+import HD_RL from './steps/HD_RL';
 
 import CN_DB from './steps/CN_DB';
 import CN_RDT from './steps/CN_RDT';

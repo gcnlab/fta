@@ -1,0 +1,10 @@
+[
+    { "label": "UTC", "offset": 0 },
+    { "label": "DE", "offset": 1 },
+    { "label": "TL", "offset": 7 },
+    { "label": "CN", "offset": 8 },
+    { "label": "JST", "offset": 9 },
+    { "label": "NY", "offset": -5 },
+    { "label": "NY夏", "offset": -4 }
+]
+

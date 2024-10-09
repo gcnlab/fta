@@ -141,7 +141,7 @@ export default function ReleaseManualWizard() {
   // 完了ボタンのハンドラー
   const handleComplete = () => {
     // メッセージを表示
-    showNotification('この機能でEXCELの手順書を作成する予定です。');
+    //showNotification('この機能でEXCELの手順書を作成する予定です。');
 
     // Excelダウンロード処理を実行
     handleDownloadExcel();
@@ -400,3 +400,4 @@ export default function ReleaseManualWizard() {
     </div>
   );
 }
+

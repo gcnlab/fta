@@ -4,6 +4,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Tooltip from './components/Tooltip'; // Tooltip のインポートを追加
 
 export default function Home() {
   const [currentTime, setCurrentTime] = useState<Date | null>(null);
@@ -33,26 +34,28 @@ export default function Home() {
   const copyToClipboard = (text: string, event: React.MouseEvent<HTMLButtonElement>) => {
     navigator.clipboard.writeText(text).then(() => {
       // マウス位置にツールチップを表示
-      const tooltipX = event.clientX + 20; // マウスポインタのさらに右上に表示
-      const tooltipY = event.clientY - 20;
+      const tooltipX = event.clientX + 20; // マウスポインタの右側に表示
+      const tooltipY = event.clientY - 20; // マウスポインタの上側に表示
       setTooltipPosition({ x: tooltipX, y: tooltipY });
       setTooltipVisible(true); // ツールチップを表示
-      setTimeout(() => setTooltipVisible(false), 1000); // 1秒後に非表示
+      // ツールチップは Tooltip コンポーネント内で自動的に非表示になります
+    }).catch(() => {
+      alert('クリップボードへのコピーに失敗しました。');
     });
   };
 
   return (
     <div className="grid sm:grid-cols-1 lg:grid-cols-2 grid-rows-2 lg:h-[calc(100vh-74px)] h-auto bg-gray-800 text-gray-200 text-sm relative">
-
       {/* 左上: メインコンテンツ */}
       <div className="p-8 border border-gray-600 relative min-h-[200px]">
         <h2 className="text-lg font-semibold text-gray-100 mb-4">Intra Web Apps</h2>
 
         <div className="absolute top-0 right-0 p-8">
           <button className="bg-gray-700 hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-gray-600 text-white px-3 py-1 rounded w-28 text-center">
-            <a href="https://gitlab.com" target="_blank">GitLab</a>
+            <a href="https://gitlab.com" target="_blank" rel="noopener noreferrer">GitLab</a>
           </button>
         </div>
+
         {/* products */}
         <div className="item-center mb-2">
           <p className="text-gray-400 mb-2 text-xs text-end">Shift+Click for Console</p>
@@ -65,9 +68,9 @@ export default function Home() {
                 className="bg-gray-700 hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-gray-600 text-white px-3 py-1 rounded w-full text-center"
                 onClick={(e) => {
                   if (e.shiftKey) {
-                    window.open("http://10.219.7.77:7011/console/login/LoginForm.jsp", "_blank"); // シフトキーが押された場合のURL
+                    window.open("http://10.219.7.77:7011/console/login/LoginForm.jsp", "_blank");
                   } else {
-                    window.open("http://10.219.7.77:7011/gseplan/servlet/MainServlet?FunctionCode_=LG0010001", "_blank"); // 通常のURL
+                    window.open("http://10.219.7.77:7011/gseplan/servlet/MainServlet?FunctionCode_=LG0010001", "_blank");
                   }
                 }}
               >
@@ -77,9 +80,9 @@ export default function Home() {
                 className="bg-gray-700 hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-gray-600 text-white px-3 py-1 rounded w-full text-center"
                 onClick={(e) => {
                   if (e.shiftKey) {
-                    window.open("http://10.219.7.77:7001/console/login/LoginForm.jsp", "_blank"); // シフトキーが押された場合のURL
+                    window.open("http://10.219.7.77:7001/console/login/LoginForm.jsp", "_blank");
                   } else {
-                    window.open("http://10.219.7.77:7001/gseplan/servlet/MainServlet?FunctionCode_=LG0010001", "_blank"); // 通常のURL
+                    window.open("http://10.219.7.77:7001/gseplan/servlet/MainServlet?FunctionCode_=LG0010001", "_blank");
                   }
                 }}
               >
@@ -89,9 +92,9 @@ export default function Home() {
                 className="bg-gray-700 hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-gray-600 text-white px-3 py-1 rounded w-full text-center"
                 onClick={(e) => {
                   if (e.shiftKey) {
-                    window.open("http://10.219.7.77:7051/console/login/LoginForm.jsp", "_blank"); // シフトキーが押された場合のURL
+                    window.open("http://10.219.7.77:7051/console/login/LoginForm.jsp", "_blank");
                   } else {
-                    window.open("http://10.219.7.77:7051/gseplan/servlet/MainServlet?FunctionCode_=LG0010001", "_blank"); // 通常のURL
+                    window.open("http://10.219.7.77:7051/gseplan/servlet/MainServlet?FunctionCode_=LG0010001", "_blank");
                   }
                 }}
               >
@@ -101,9 +104,9 @@ export default function Home() {
                 className="bg-gray-700 hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-gray-600 text-white px-3 py-1 rounded w-full text-center"
                 onClick={(e) => {
                   if (e.shiftKey) {
-                    window.open("http://10.219.7.77:7021/console/login/LoginForm.jsp", "_blank"); // シフトキーが押された場合のURL
+                    window.open("http://10.219.7.77:7021/console/login/LoginForm.jsp", "_blank");
                   } else {
-                    window.open("http://10.219.7.77:7021/gseplan/servlet/MainServlet?FunctionCode_=LG0010001", "_blank"); // 通常のURL
+                    window.open("http://10.219.7.77:7021/gseplan/servlet/MainServlet?FunctionCode_=LG0010001", "_blank");
                   }
                 }}
               >
@@ -120,9 +123,9 @@ export default function Home() {
                 className="bg-gray-700 hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-gray-600 text-white px-3 py-1 rounded w-full text-center"
                 onClick={(e) => {
                   if (e.shiftKey) {
-                    window.open("http://10.219.7.50:7004/console/login/LoginForm.jsp", "_blank"); // シフトキーが押された場合のURL
+                    window.open("http://10.219.7.50:7004/console/login/LoginForm.jsp", "_blank");
                   } else {
-                    window.open("http://10.219.7.50:7014/GIOS_P", "_blank"); // 通常のURL
+                    window.open("http://10.219.7.50:7014/GIOS_P", "_blank");
                   }
                 }}
               >
@@ -132,9 +135,9 @@ export default function Home() {
                 className="bg-gray-700 hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-gray-600 text-white px-3 py-1 rounded w-full text-center"
                 onClick={(e) => {
                   if (e.shiftKey) {
-                    window.open("http://10.219.7.50:7003/console/login/LoginForm.jsp", "_blank"); // シフトキーが押された場合のURL
+                    window.open("http://10.219.7.50:7003/console/login/LoginForm.jsp", "_blank");
                   } else {
-                    window.open("http://10.219.7.50:7013/GIOS_D", "_blank"); // 通常のURL
+                    window.open("http://10.219.7.50:7013/GIOS_D", "_blank");
                   }
                 }}
               >
@@ -144,9 +147,9 @@ export default function Home() {
                 className="bg-gray-700 hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-gray-600 text-white px-3 py-1 rounded w-full text-center"
                 onClick={(e) => {
                   if (e.shiftKey) {
-                    window.open("http://10.219.7.50:7005/console/login/LoginForm.jsp", "_blank"); // シフトキーが押された場合のURL
+                    window.open("http://10.219.7.50:7005/console/login/LoginForm.jsp", "_blank");
                   } else {
-                    window.open("http://10.219.7.50:7015/GIOS_B", "_blank"); // 通常のURL
+                    window.open("http://10.219.7.50:7015/GIOS_B", "_blank");
                   }
                 }}
               >
@@ -156,9 +159,9 @@ export default function Home() {
                 className="bg-gray-700 hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-gray-600 text-white px-3 py-1 rounded w-full text-center"
                 onClick={(e) => {
                   if (e.shiftKey) {
-                    window.open("http://10.219.7.50:7001/console/login/LoginForm.jsp", "_blank"); // シフトキーが押された場合のURL
+                    window.open("http://10.219.7.50:7001/console/login/LoginForm.jsp", "_blank");
                   } else {
-                    window.open("http://10.219.7.50:7011/GIOS_F", "_blank"); // 通常のURL
+                    window.open("http://10.219.7.50:7011/GIOS_F", "_blank");
                   }
                 }}
               >
@@ -172,40 +175,37 @@ export default function Home() {
 
         {/* イントラその他 */}
         <div className="item-center mb-4">
-        <div className="flex items-center mb-2">
+          <div className="flex items-center mb-2">
             <h3 className="text-end text-sm font-semibold text-gray-100 mr-2 w-20">申請</h3>
             <div className="grid grid-cols-2 gap-2 w-full">
               <button className="bg-gray-700 hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-gray-600 text-white px-3 py-0.5 rounded w-full text-center">
-                <a href="https://t80451803j2f8br7.itpm.masterscope.jp/itpm/common/login/" target="_blank">
+                <a href="https://t80451803j2f8br7.itpm.masterscope.jp/itpm/common/login/" target="_blank" rel="noopener noreferrer">
                   ITPM
                 </a>
               </button>
               <button className="bg-gray-700 hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-gray-600 text-white px-3 py-0.5 rounded w-full text-center">
-                <a href="http://www.dwfs2.daikin.co.jp/dwfs/" target="_blank">
+                <a href="http://www.dwfs2.daikin.co.jp/dwfs/" target="_blank" rel="noopener noreferrer">
                   e-App
                 </a>
               </button>
-
             </div>
           </div>
           <div className="flex items-center mb-2">
             <h3 className="text-end text-sm font-semibold text-gray-100 mr-2 w-20">Mail</h3>
             <div className="grid grid-cols-2 gap-2 w-full">
               <button className="bg-gray-700 hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-gray-600 text-white px-3 py-0.5 rounded w-full text-center">
-                <a href="http://www.intra.daikin.co.jp/email/encrypt/" target="_blank">
+                <a href="http://www.intra.daikin.co.jp/email/encrypt/" target="_blank" rel="noopener noreferrer">
                   暗号メール
                 </a>
               </button>
               <button className="bg-gray-700 hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-gray-600 text-white px-3 py-0.5 rounded w-full text-center">
-                <a href="http://www.intra.daikin.co.jp/email/filesend/" target="_blank">
+                <a href="http://www.intra.daikin.co.jp/email/filesend/" target="_blank" rel="noopener noreferrer">
                   宅配メール
                 </a>
               </button>
-
             </div>
           </div>
         </div>
-
       </div>
 
       {/* 右上: 時計表示 */}
@@ -224,11 +224,13 @@ export default function Home() {
           </div>
           <div>
             <h3 className="text-base font-semibold text-gray-300">Germany Time</h3>
-            <p className="text-gray-200">{formatTime(currentTime!, 'Europe/Berlin')}</p>
+            <p className="text-gray-200">{formatTime(currentTime!, 'Etc/GMT-1')}</p>{/* Europe/Berlin */}
+            <p className="text-gray-200 text-xs text-end">*utc+1 fixed</p>
           </div>
           <div>
             <h3 className="text-base font-semibold text-gray-300">New York Time</h3>
             <p className="text-gray-200">{formatTime(currentTime!, 'America/New_York')}</p>
+            <p className="text-gray-200 text-xs text-end">*auto summer time</p>
           </div>
         </div>
       </div>
@@ -240,12 +242,13 @@ export default function Home() {
 
         {/* ツールチップ */}
         {tooltipVisible && (
-          <div
-            className="fixed bg-pink-200 text-slate-500 px-3 py-1 rounded-lg opacity-90 z-50 text-xs"
-            style={{ top: `${tooltipPosition.y}px`, left: `${tooltipPosition.x}px`, transition: 'opacity 0.5s ease' }}
-          >
-            Copied to clipboard!
-          </div>
+          <Tooltip
+            message="コピーしました"
+            position={tooltipPosition}
+            visible={tooltipVisible}
+            duration={1000}
+            onClose={() => setTooltipVisible(false)}
+          />
         )}
 
         {/* メインリンク */}
@@ -353,15 +356,15 @@ export default function Home() {
       <div className="p-8 border border-gray-600 min-h-[200px]">
         <h2 className="text-lg font-semibold text-gray-100">Additional Contents</h2>
 
-        <br></br>
-        <h3 className="text-sm ml-4 font-semibold text-gray-300 mb-8">ローカル開発環境インストーラ</h3> {/* Changed mb-4 to mb-8 for more space */}
+        <br />
+        <h3 className="text-sm ml-4 font-semibold text-gray-300 mb-8">ローカル開発環境インストーラ</h3>
         {/* GS-EPLAN section */}
         <div className="grid grid-cols-4 gap-1 w-full ml-12">
           <h3 className="text-sm font-semibold text-gray-100 mr-2 w-15">GS-EPLAN</h3>
-          <Link href="/installer/GS-EPLANローカル開発環境.zip" className="text-teal-200 hover:text-teal-300  hover:translate-x-0.5 hover:translate-y-0.5 inline-block">
+          <Link href="/installer/GS-EPLANローカル開発環境.zip" className="text-teal-200 hover:text-teal-300 hover:translate-x-0.5 hover:translate-y-0.5 inline-block">
             [インストーラ]
           </Link>
-          <Link href="/installer/GS-EPLANローカル開発環境構築手順書.xlsx" className="text-teal-200 hover:text-teal-300  hover:translate-x-0.5 hover:translate-y-0.5 inline-block">
+          <Link href="/installer/GS-EPLANローカル開発環境構築手順書.xlsx" className="text-teal-200 hover:text-teal-300 hover:translate-x-0.5 hover:translate-y-0.5 inline-block">
             [手順書]
           </Link>
           {/* 見えない隠し列を追加 */}
@@ -382,6 +385,17 @@ export default function Home() {
         </div>
       </div>
 
+      {/* ツールチップ表示 */}
+      {tooltipVisible && (
+        <Tooltip
+          message="コピーしました"
+          position={tooltipPosition}
+          visible={tooltipVisible}
+          duration={300}
+          onClose={() => setTooltipVisible(false)}
+        />
+      )}
     </div>
   );
 }
+

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { MappingData } from './types';
+import Tooltip from '../../components/Tooltip';
 
 interface MappingModalProps {
     onClose: () => void;
@@ -131,8 +132,7 @@ const MappingModal: React.FC<MappingModalProps> = ({
         const textToCopy = editableData
             .map(
                 (col) =>
-                    `${col.hdNameJ || `項目${col.colPos}`}\t${
-                        col.hdName || `column${col.colPos}`
+                    `${col.hdNameJ || `項目${col.colPos}`}\t${col.hdName || `column${col.colPos}`
                     }\t${col.colPos}\t${col.filePos}`
             )
             .join('\n');
@@ -292,11 +292,10 @@ const MappingModal: React.FC<MappingModalProps> = ({
                                             onClick={() =>
                                                 handleRemoveRow(rowIndex)
                                             }
-                                            className={`text-red-500 ${
-                                                editableData.length === 1
+                                            className={`text-red-500 ${editableData.length === 1
                                                     ? 'opacity-50 cursor-not-allowed'
                                                     : ''
-                                            }`}
+                                                }`}
                                             disabled={editableData.length === 1}
                                         >
                                             －
@@ -330,7 +329,7 @@ const MappingModal: React.FC<MappingModalProps> = ({
                             onClick={handleCopyToClipboard}
                             className="px-2 py-1 text-xs bg-gray-600 text-white rounded-md hover:bg-gray-700 active:bg-gray-800 transition-all"
                         >
-                            クリップボードにコピー
+                            コピー
                         </button>
                     </div>
                     <div className="flex space-x-2">
@@ -350,15 +349,18 @@ const MappingModal: React.FC<MappingModalProps> = ({
                 </div>
             </div>
             {tooltipVisible && (
-                <div
-                    className="absolute bg-black text-white text-xs rounded py-1 px-2"
-                    style={{ top: tooltipPosition.y, left: tooltipPosition.x }}
-                >
-                    コピーしました
-                </div>
+                <Tooltip
+                    message="コピーしました"
+                    position={tooltipPosition}
+                    visible={tooltipVisible}
+                    duration={600}
+                    onClose={() => setTooltipVisible(false)}
+                />
             )}
+
         </div>
     );
 };
 
 export default MappingModal;
+

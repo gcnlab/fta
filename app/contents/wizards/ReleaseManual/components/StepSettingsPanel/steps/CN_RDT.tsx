@@ -1,4 +1,4 @@
-// /app/contents/wizards/ReleaseManual/components/StepSettingsPanel/steps/CN_RTD.tsx
+// /app/contents/wizards/ReleaseManual/components/StepSettingsPanel/steps/CN_RDT.tsx
 
 import React, { useState } from 'react';
 import { Step, StepDetails } from '../../../types';
@@ -32,7 +32,7 @@ const PanelSettings: React.FC<IfProps> = ({
     'リモートデスクトップで下記へ接続する。',
   ];
 
-  const users = [ 'gseplan_prd', 'gios_prd', ]
+  const users = ['gseplan_prd', 'gios_prd',]
 
   return (
     <div className="p-4 bg-orange-50 rounded-md border border-gray-300 shadow-md relative">
@@ -88,4 +88,3 @@ const PanelSettings: React.FC<IfProps> = ({
 };
 
 export default React.memo(PanelSettings);
-

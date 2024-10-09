@@ -5,7 +5,9 @@
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { MappingData } from '../types';
-import MappingTable from '../MappingTable';
+import MappingDisplayTable from '../components/MappingDisplayTable';
+import MappingModal from '../MappingModal'; // 必要に応じてパスを確認してください
+import Tooltip from '../../../components/Tooltip';
 
 // 定数として行数制限を定義
 const MAX_ROWS = 1000;
@@ -15,28 +17,28 @@ export default function MappingPage() {
     // fileIdがstringまたはstring[]の場合に対応
     const fileId = Array.isArray(params.fileId) ? params.fileId[0] : params.fileId;
 
-    const [inputData, setInputData] = useState(""); // ユーザが入力または貼り付けたデータ
+    const [inputData, setInputData] = useState<string>(""); // ユーザが入力または貼り付けたデータ
     const [formattedData, setFormattedData] = useState<string[][]>([]); // 成形されたデータ
-    const [numColumns, setNumColumns] = useState(0); // 列数
-    const [numRows, setNumRows] = useState(0); // 行数
+    const [numColumns, setNumColumns] = useState<number>(0); // 列数
+    const [numRows, setNumRows] = useState<number>(0); // 行数
     const [mappingData, setMappingData] = useState<MappingData | null>(null); // マッピングデータの状態
-    const [loading, setLoading] = useState(false); // ローディング状態
-    const [isJapanese, setIsJapanese] = useState(true); // ヘッダ切り替え用の状態
-    const [includeHeader, setIncludeHeader] = useState(true); // ヘッダを含めるかどうか
-    const [reverseParse, setReverseParse] = useState(true); // 逆マッピング機能
+    const [loading, setLoading] = useState<boolean>(false); // ローディング状態
+    const [isJapanese, setIsJapanese] = useState<boolean>(true); // ヘッダ切り替え用の状態
+    const [includeHeader, setIncludeHeader] = useState<boolean>(true); // ヘッダを含めるかどうか
+    const [reverseParse, setReverseParse] = useState<boolean>(true); // 逆マッピング機能
     const [editingCell, setEditingCell] = useState<{ row: number, col: number } | null>(null); // 編集中のセル
 
     // ツールチップの可視状態と位置を管理
-    const [tooltipVisible, setTooltipVisible] = useState(false);
-    const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
+    const [tooltipVisible, setTooltipVisible] = useState<boolean>(false);
+    const [tooltipPosition, setTooltipPosition] = useState<{ x: number, y: number }>({ x: 0, y: 0 });
 
-    const [showModal, setShowModal] = useState(false); // モーダルの表示状態
-    const [isMappingApplied, setIsMappingApplied] = useState(false); // マッピングが適用されたかどうか
+    const [showModal, setShowModal] = useState<boolean>(false); // モーダルの表示状態
+    const [isMappingApplied, setIsMappingApplied] = useState<boolean>(false); // マッピングが適用されたかどうか
 
     const handleOpenModal = () => setShowModal(true);  // モーダルを開く
     const handleCloseModal = () => setShowModal(false); // モーダルを閉じる
 
-    const [isTemporaryMapping, setIsTemporaryMapping] = useState(false); // 一時的マッピング適用フラグ
+    const [isTemporaryMapping, setIsTemporaryMapping] = useState<boolean>(false); // 一時的マッピング適用フラグ
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
         if (e.key === 'Tab') {
@@ -44,11 +46,11 @@ export default function MappingPage() {
             const textarea = e.target as HTMLTextAreaElement;
             const start = textarea.selectionStart;
             const end = textarea.selectionEnd;
-    
+
             // タブ文字を挿入
             const newValue = inputData.substring(0, start) + '\t' + inputData.substring(end);
             setInputData(newValue);
-    
+
             // カーソル位置をタブ文字の後に設定
             setTimeout(() => {
                 textarea.selectionStart = textarea.selectionEnd = start + 1;
@@ -72,19 +74,19 @@ export default function MappingPage() {
                 setLoading(true);
                 try {
                     let data: MappingData;
-    
+
                     if (fileId === 'user-mapping') {
                         // 'user-mapping'の場合はローカルストレージから取得
                         const userMappingJSON = localStorage.getItem('userMappingMappingPage');
                         if (userMappingJSON) {
                             const userMapping: MappingData = JSON.parse(userMappingJSON);
-    
+
                             // 必須プロパティの確認とデフォルト値の設定
                             if (!userMapping.fileName) userMapping.fileName = 'user-mapping';
                             if (!userMapping.tableName) userMapping.tableName = 'user-table';
                             if (!userMapping.tableNameJ) userMapping.tableNameJ = 'ユーザテーブル';
                             if (!userMapping.columns) userMapping.columns = [];
-    
+
                             data = userMapping;
                         } else {
                             alert("ユーザーマッピングデータが存在しません。");
@@ -98,16 +100,16 @@ export default function MappingPage() {
                             throw new Error(`HTTP error! status: ${res.status}`);
                         }
                         const fetchedData: MappingData = await res.json();
-    
+
                         // 必須プロパティの確認とデフォルト値の設定
                         if (!fetchedData.fileName) fetchedData.fileName = 'unknown';
                         if (!fetchedData.tableName) fetchedData.tableName = 'unknown-table';
                         if (!fetchedData.tableNameJ) fetchedData.tableNameJ = '未知のテーブル';
                         if (!fetchedData.columns) fetchedData.columns = [];
-    
+
                         data = fetchedData; // APIから取得したデータのみを使用
                     }
-    
+
                     setMappingData(data);
                 } catch (err) {
                     console.error('Error fetching mapping data:', err);
@@ -118,10 +120,10 @@ export default function MappingPage() {
                 }
             }
         };
-    
+
         loadMappingData();
     }, [fileId]);
-    
+
     // テキストボックスに貼り付けられたデータを処理
     const handlePaste = (e: React.ClipboardEvent<HTMLTextAreaElement>) => {
         const pastedData = e.clipboardData.getData('Text');
@@ -329,6 +331,15 @@ export default function MappingPage() {
         setIsJapanese(!isJapanese);
     };
 
+    // チェックボックスの変更ハンドラー
+    const handleIncludeHeaderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setIncludeHeader(e.target.checked);
+    };
+
+    const handleReverseParseChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setReverseParse(e.target.checked);
+    };
+
     // マッピングデータがロードされていない場合はローディングを表示
     if (!mappingData) {
         return <div>Loading...</div>;
@@ -399,14 +410,14 @@ export default function MappingPage() {
                 <div className="flex space-x-2">
                     <button
                         onClick={() => handleParse(mappingData)}
-                        className="px-2 py-1 text-xs bg-gray-600 text-white rounded-md shadow-md hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-gray-700 active:bg-gray-800 transition-all"
+                        className="px-2 py-1 text-xs bg-gray-600 text-white rounded-md shadow-md hover:bg-gray-700 active:bg-gray-800 transition-all"
                     >
-                        マッピング
+                        データマッピング
                     </button>
 
                     <button
                         onClick={handleClear}
-                        className="px-2 py-1 text-xs bg-gray-500 text-white rounded-md shadow-md hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-gray-600 active:bg-gray-700 transition-all"
+                        className="px-2 py-1 text-xs bg-gray-500 text-white rounded-md shadow-md hover:bg-gray-600 active:bg-gray-700 transition-all"
                         disabled={!inputData}
                     >
                         クリア
@@ -414,7 +425,7 @@ export default function MappingPage() {
 
                     <button
                         onClick={() => window.history.back()}
-                        className="px-2 py-1 text-xs bg-gray-600 text-white rounded-md shadow-md hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-gray-700 active:bg-gray-800 transition-all"
+                        className="px-2 py-1 text-xs bg-gray-600 text-white rounded-md shadow-md hover:bg-gray-700 active:bg-gray-800 transition-all"
                     >
                         戻る
                     </button>
@@ -435,7 +446,7 @@ export default function MappingPage() {
                     {/* マッピング定義ボタン */}
                     <button
                         onClick={handleOpenModal}
-                        className="px-2 py-1 text-xs bg-gray-600 text-white rounded-md shadow-md hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-gray-700 active:bg-gray-800 transition-all"
+                        className="px-2 py-1 text-xs bg-gray-600 text-white rounded-md shadow-md hover:bg-gray-700 active:bg-gray-800 transition-all"
                     >
                         マッピング定義
                     </button>
@@ -444,10 +455,10 @@ export default function MappingPage() {
 
             {/* モーダル表示 */}
             {showModal && mappingData && (
-                <MappingTable
-                    onClose={handleCloseModal}                       // モーダルを閉じる関数
-                    onApplyTemporaryMapping={handleApplyTemporaryMapping} // 一時的マッピングを適用する関数
-                    mappingData={mappingData}                        // 現在のマッピングデータを渡す
+                <MappingModal
+                    onClose={handleCloseModal}
+                    onApplyTemporaryMapping={handleApplyTemporaryMapping}
+                    mappingData={mappingData}
                 />
             )}
 
@@ -457,115 +468,36 @@ export default function MappingPage() {
                 </p>
             )}
 
-            {formattedData.length > 0 && (
-                <>
-                    {/* tableName と tableNameJ の表示 */}
-                    <h2 className="mt-5 text-sm font-semibold mb-1">
-                        {isJapanese ? mappingData.tableNameJ : mappingData.tableName} {/* ヘッダの切り替え */}
-                    </h2>
-
-                    {/* ヘッダ切り替えボタン */}
-                    <button onClick={toggleHeader} className="mb-2 px-2 py-1 text-xs bg-gray-300 rounded-md shadow-md hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-gray-400 active:bg-gray-500 transition-all">
-                        {isJapanese ? "英語名に切り替え" : "日本語名に切り替え"}
-                    </button>
-
-                    <div className="overflow-x-auto overflow-y-auto" style={{ maxHeight: '270px' }}>
-                        <table className="w-full border-collapse text-xs">
-                            <thead style={{ position: 'sticky', top: 0 }}>
-                                <tr className='bg-slate-50'>
-                                    <th className="p-1 text-right" style={{ width: '20px', border: 'none', fontSize: '10px', padding: '0px' }}></th>
-                                    {mappingData.columns.map((col) => (
-                                        <th key={col.colPos} className="p-1 text-left" style={{ border: 'none', fontSize: '10px', color: isTemporaryMapping ? 'blue' : 'black', padding: '0px 0px 0px 7px' }}>
-                                            {col.filePos}
-                                        </th>
-                                    ))}
-                                </tr>
-                                <tr className="bg-gray-100" style={{ height: '20px' }}>
-                                    <th className="p-1 text-right" style={{ width: '20px', border: 'none' }}>No.</th>
-                                    {mappingData.columns.map((col) => (
-                                        <th
-                                            key={col.colPos}
-                                            className="p-1 border text-left"
-                                            style={{
-                                                whiteSpace: 'nowrap',
-                                                overflow: 'hidden',
-                                                textOverflow: 'ellipsis',
-                                                maxWidth: '100px',
-                                                fontSize: '12px',
-                                                height: '20px',
-                                                color: col.filePos === 0 ? 'gray' : 'black', // filePosが0なら文字を薄く表示
-                                            }}
-                                            title={isJapanese ? col.hdNameJ : col.hdName} // ヘッダ名をホバー時に表示
-                                        >
-                                            {isJapanese ? col.hdNameJ : col.hdName} {/* ヘッダ切り替え */}
-                                        </th>
-                                    ))}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {formattedData.map((row, rowIndex) => (
-                                    <tr key={rowIndex} style={{ height: '18px', backgroundColor: rowIndex % 2 === 0 ? '#fffff0' : 'white' }}>
-                                        <td className="p-0.5 text-right" style={{ width: '20px', border: 'none' }}>{rowIndex + 1}</td>
-                                        {row.map((cell, cellIndex) => (
-                                            <td
-                                                key={cellIndex}
-                                                className="p-0.5 border"
-                                                contentEditable={editingCell?.row === rowIndex && editingCell?.col === cellIndex} // セルを編集可能にする
-                                                suppressContentEditableWarning={true} // Reactの警告を無視
-                                                onClick={() => setEditingCell({ row: rowIndex, col: cellIndex })} // クリックでアクティブに
-                                                onDoubleClick={() => handleCellDoubleClick(rowIndex, cellIndex)} // ダブルクリックで編集モードに
-                                                onBlur={(e) => handleCellChange(rowIndex, cellIndex, e.currentTarget.innerText)} // 編集後の値を更新
-                                                style={{ whiteSpace: 'nowrap', fontSize: '12px', height: '18px' }}
-                                            >
-                                                {cell}
-                                            </td>
-                                        ))}
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div className="flex space-x-2 mt-2 items-center justify-start">
-                        <button onClick={handleCopyToClipboard} className="px-2 py-1 text-xs bg-gray-600 text-white rounded-md shadow-md hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-gray-700 active:bg-gray-800 transition-all">
-                            クリップボードにコピー
-                        </button>
-                        <button onClick={handleDownload} className="px-2 py-1 text-xs bg-gray-600 text-white rounded-md shadow-md hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-gray-700 active:bg-gray-800 transition-all">
-                            ダウンロード
-                        </button>
-
-                        {/* ヘッダを含めるチェックボックス */}
-                        <label className="ml-4 text-xs flex items-center"> {/* items-centerでチェックボックスとテキストを縦方向に揃える */}
-                            <input
-                                type="checkbox"
-                                checked={includeHeader}
-                                onChange={(e) => setIncludeHeader(e.target.checked)}
-                                className="mr-1"
-                            /> ヘッダを含める
-                        </label>
-
-                        {/* 逆マッピングのチェックボックス */}
-                        <label className="ml-4 text-xs flex items-center"> {/* items-centerでチェックボックスとテキストを縦方向に揃える */}
-                            <input
-                                type="checkbox"
-                                checked={reverseParse}
-                                onChange={(e) => setReverseParse(e.target.checked)}
-                                className="mr-1"
-                            /> リバースマッピングする
-                        </label>
-                    </div>
-                </>
+            {formattedData.length > 0 && mappingData && (
+                <MappingDisplayTable
+                    formattedData={formattedData}
+                    mappingData={mappingData}
+                    isJapanese={isJapanese}
+                    toggleHeader={toggleHeader}
+                    includeHeader={includeHeader}
+                    reverseParse={reverseParse}
+                    handleCopyToClipboard={handleCopyToClipboard}
+                    handleDownload={handleDownload}
+                    handleIncludeHeaderChange={handleIncludeHeaderChange}
+                    handleReverseParseChange={handleReverseParseChange}
+                    handleCellChange={handleCellChange}
+                    handleCellDoubleClick={handleCellDoubleClick}
+                    editingCell={editingCell}
+                    setEditingCell={setEditingCell} // 追加
+                />
             )}
 
             {/* ツールチップ表示 */}
             {tooltipVisible && (
-                <div
-                    className="fixed bg-pink-200 text-slate-500 px-3 py-1 rounded-lg opacity-90 z-50 text-xs"
-                    style={{ top: `${tooltipPosition.y}px`, left: `${tooltipPosition.x}px`, transition: 'opacity 0.5s ease' }}
-                >
-                    Copied to clipboard!
-                </div>
+                <Tooltip
+                    message="コピーしました"
+                    position={tooltipPosition}
+                    visible={tooltipVisible}
+                    duration={600}
+                    onClose={() => setTooltipVisible(false)}
+                />
             )}
         </div>
-    ); // JSXの閉じ括弧を追加
-} // 関数の閉じ括弧を追加
+    ); // 修正: ')' を追加
+}
+
