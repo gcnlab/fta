@@ -1,0 +1,98 @@
+[
+    {
+      "category": "SPECIAL",
+      "heading": "",
+      "buttons": [
+        {
+          "label": "GitLab",
+          "url": "https://gitlab.com",
+          "shiftUrl": null
+        }
+      ]
+    },
+    {
+      "category": "INTRA1",
+      "heading": "GSE開発",
+      "buttons": [
+        {
+          "label": "QAS1",
+          "url": "http://10.219.7.77:7011/gseplan/servlet/MainServlet?FunctionCode_=LG0010001",
+          "shiftUrl": "http://10.219.7.77:7011/console/login/LoginForm.jsp"
+        },
+        {
+          "label": "DEV1",
+          "url": "http://10.219.7.77:7001/gseplan/servlet/MainServlet?FunctionCode_=LG0010001",
+          "shiftUrl": "http://10.219.7.77:7001/console/login/LoginForm.jsp"
+        },
+        {
+          "label": "UAT",
+          "url": "http://10.219.7.77:7051/gseplan/servlet/MainServlet?FunctionCode_=LG0010001",
+          "shiftUrl": "http://10.219.7.77:7051/console/login/LoginForm.jsp"
+        },
+        {
+          "label": "QAS2",
+          "url": "http://10.219.7.77:7021/gseplan/servlet/MainServlet?FunctionCode_=LG0010001",
+          "shiftUrl": "http://10.219.7.77:7021/console/login/LoginForm.jsp"
+        }
+      ]
+    },
+    {
+      "category": "INTRA2",
+      "heading": "GIO開発",
+      "buttons": [
+        {
+          "label": "GIOS_P",
+          "url": "http://10.219.7.50:7014/GIOS_P",
+          "shiftUrl": "http://10.219.7.50:7004/console/login/LoginForm.jsp"
+        },
+        {
+          "label": "GIOS_D",
+          "url": "http://10.219.7.50:7013/GIOS_D",
+          "shiftUrl": "http://10.219.7.50:7003/console/login/LoginForm.jsp"
+        },
+        {
+          "label": "GIOS_B",
+          "url": "http://10.219.7.50:7015/GIOS_B",
+          "shiftUrl": "http://10.219.7.50:7005/console/login/LoginForm.jsp"
+        },
+        {
+          "label": "GIOS_F",
+          "url": "http://10.219.7.50:7011/GIOS_F",
+          "shiftUrl": "http://10.219.7.50:7001/console/login/LoginForm.jsp"
+        }
+      ]
+    },
+    {
+      "category": "INTRA3",
+      "heading": "申請",
+      "buttons": [
+        {
+          "label": "ITPM",
+          "url": "https://t80451803j2f8br7.itpm.masterscope.jp/itpm/common/login/",
+          "shiftUrl": null
+        },
+        {
+          "label": "e-App",
+          "url": "http://www.dwfs2.daikin.co.jp/dwfs/",
+          "shiftUrl": null
+        }
+      ]
+    },
+    {
+      "category": "INTRA4",
+      "heading": "Mail",
+      "buttons": [
+        {
+          "label": "暗号メール",
+          "url": "http://www.intra.daikin.co.jp/email/encrypt/",
+          "shiftUrl": null
+        },
+        {
+          "label": "宅配メール",
+          "url": "http://www.intra.daikin.co.jp/email/filesend/",
+          "shiftUrl": null
+        }
+      ]
+    }
+  ]
+  

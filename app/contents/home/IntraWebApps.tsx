@@ -1,125 +1,143 @@
-// /app/contents/home/IntraWebApps.tsx
+// /app/contents/home/IntraWebApp.tsx
 
 'use client';
 
-export default function IntraWebApps() {
+import React from 'react';
+import data from './data/intraWebAppsData.json';
+
+interface ButtonData {
+  label: string;
+  url: string;
+  shiftUrl: string | null;
+}
+
+interface CategoryData {
+  category: string;
+  heading: string;
+  buttons: ButtonData[];
+}
+
+export default function IntraWebApp() {
+  // 各カテゴリを個別に取得
+  const specialCategory = data.find((category: CategoryData) => category.category === "SPECIAL");
+  const gseCategory = data.find((category: CategoryData) => category.category === "INTRA1");
+  const gioCategory = data.find((category: CategoryData) => category.category === "INTRA2");
+  const submissionCategory = data.find((category: CategoryData) => category.category === "INTRA3");
+  const mailCategory = data.find((category: CategoryData) => category.category === "INTRA4");
+
   return (
     <div className="p-8 border border-gray-600 min-w-[500px] min-h-[250px] bg-transparent relative flex-shrink-0">
       <h2 className="text-lg font-semibold text-gray-100 mb-4 whitespace-nowrap">Intra Web Apps</h2>
 
-      <div className="absolute top-0 right-0 p-8">
-        <button className="bg-gray-700 hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-gray-600 text-white px-3 py-1 rounded w-28 text-center whitespace-nowrap">
-          <a href="https://gitlab.com" target="_blank" rel="noopener noreferrer">GitLab</a>
-        </button>
-      </div>
+      {/* SPECIAL カテゴリのボタン（GitLab） */}
+      {specialCategory && specialCategory.buttons.map((button, index) => (
+        <div key={`special-${index}`} className="absolute top-0 right-0 p-8">
+          <button className="bg-gray-700 hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-gray-600 text-white px-3 py-1 rounded w-28 text-center whitespace-nowrap">
+            <a href={button.url} target="_blank" rel="noopener noreferrer">{button.label}</a>
+          </button>
+        </div>
+      ))}
 
-      {/* Products Sections */}
-      <div className="items-center mb-2">
-        <p className="text-gray-400 mb-2 text-xs text-end whitespace-nowrap">Shift+Click for Console</p>
+      {/* Shift+Click の説明 */}
+      <p className="text-gray-400 mb-2 text-xs text-end whitespace-nowrap">Shift+Click for Console</p>
 
-        {/* GSE開発 */}
+      {/* GSE開発 セクション */}
+      {gseCategory && (
         <div className="flex items-center mb-2">
-          <h3 className="text-end text-sm font-semibold text-gray-100 mr-2 w-20 whitespace-nowrap">GSE開発</h3>
+          <h3 className="text-end text-sm font-semibold text-gray-100 mr-2 w-20 whitespace-nowrap">{gseCategory.heading}</h3>
           <div className="grid grid-cols-4 gap-2 w-full">
-            {/* ボタン群 */}
-            {['QAS1', 'DEV1', 'UAT', 'QAS2'].map((label, index) => (
+            {gseCategory.buttons.map((button, index) => (
               <button
-                key={index}
+                key={`gse-${index}`}
                 className="bg-gray-700 hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-gray-600 text-white px-3 py-1 rounded w-full text-center whitespace-nowrap"
                 onClick={(e) => {
-                  const urls = [
-                    ["http://10.219.7.77:7011/console/login/LoginForm.jsp", "http://10.219.7.77:7011/gseplan/servlet/MainServlet?FunctionCode_=LG0010001"],
-                    ["http://10.219.7.77:7001/console/login/LoginForm.jsp", "http://10.219.7.77:7001/gseplan/servlet/MainServlet?FunctionCode_=LG0010001"],
-                    ["http://10.219.7.77:7051/console/login/LoginForm.jsp", "http://10.219.7.77:7051/gseplan/servlet/MainServlet?FunctionCode_=LG0010001"],
-                    ["http://10.219.7.77:7021/console/login/LoginForm.jsp", "http://10.219.7.77:7021/gseplan/servlet/MainServlet?FunctionCode_=LG0010001"],
-                  ];
-                  if (e.shiftKey) {
-                    window.open(urls[index][0], "_blank");
+                  if (button.shiftUrl) {
+                    if (e.shiftKey) {
+                      window.open(button.shiftUrl, "_blank");
+                    } else {
+                      window.open(button.url, "_blank");
+                    }
                   } else {
-                    window.open(urls[index][1], "_blank");
+                    window.open(button.url, "_blank");
                   }
                 }}
               >
-                {label}
+                {button.label}
               </button>
             ))}
           </div>
         </div>
+      )}
 
-        {/* GIO開発 */}
+      {/* GIO開発 セクション */}
+      {gioCategory && (
         <div className="flex items-center mb-2">
-          <h3 className="text-end text-sm font-semibold text-gray-100 mr-2 w-20 whitespace-nowrap">GIO開発</h3>
+          <h3 className="text-end text-sm font-semibold text-gray-100 mr-2 w-20 whitespace-nowrap">{gioCategory.heading}</h3>
           <div className="grid grid-cols-4 gap-2 w-full">
-            {/* ボタン群 */}
-            {['GIOS_P', 'GIOS_D', 'GIOS_B', 'GIOS_F'].map((label, index) => (
+            {gioCategory.buttons.map((button, index) => (
               <button
-                key={index}
+                key={`gio-${index}`}
                 className="bg-gray-700 hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-gray-600 text-white px-3 py-1 rounded w-full text-center whitespace-nowrap"
                 onClick={(e) => {
-                  const shiftUrls = [
-                    "http://10.219.7.50:7004/console/login/LoginForm.jsp",
-                    "http://10.219.7.50:7003/console/login/LoginForm.jsp",
-                    "http://10.219.7.50:7005/console/login/LoginForm.jsp",
-                    "http://10.219.7.50:7001/console/login/LoginForm.jsp",
-                  ];
-                  const normalUrls = [
-                    "http://10.219.7.50:7014/GIOS_P",
-                    "http://10.219.7.50:7013/GIOS_D",
-                    "http://10.219.7.50:7015/GIOS_B",
-                    "http://10.219.7.50:7011/GIOS_F",
-                  ];
-                  if (e.shiftKey) {
-                    window.open(shiftUrls[index], "_blank");
+                  if (button.shiftUrl) {
+                    if (e.shiftKey) {
+                      window.open(button.shiftUrl, "_blank");
+                    } else {
+                      window.open(button.url, "_blank");
+                    }
                   } else {
-                    window.open(normalUrls[index], "_blank");
+                    window.open(button.url, "_blank");
                   }
                 }}
               >
-                {label}
+                {button.label}
               </button>
             ))}
           </div>
         </div>
-      </div>
+      )}
 
       <hr className="border-gray-700" style={{ width: '90%', margin: '8px auto' }} />
 
-      {/* その他セクション */}
-      <div className="items-center mb-4">
-        {/* 申請 */}
+      {/* 申請 セクション */}
+      {submissionCategory && (
         <div className="flex items-center mb-2">
-          <h3 className="text-end text-sm font-semibold text-gray-100 mr-2 w-20 whitespace-nowrap">申請</h3>
+          <h3 className="text-end text-sm font-semibold text-gray-100 mr-2 w-20 whitespace-nowrap">{submissionCategory.heading}</h3>
           <div className="grid grid-cols-2 gap-2 w-full">
-            {[
-              { href: "https://t80451803j2f8br7.itpm.masterscope.jp/itpm/common/login/", label: "ITPM" },
-              { href: "http://www.dwfs2.daikin.co.jp/dwfs/", label: "e-App" },
-            ].map((item, index) => (
-              <button key={index} className="bg-gray-700 hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-gray-600 text-white px-3 py-0.5 rounded w-full text-center whitespace-nowrap">
-                <a href={item.href} target="_blank" rel="noopener noreferrer">
-                  {item.label}
+            {submissionCategory.buttons.map((button, index) => (
+              <button
+                key={`submission-${index}`}
+                className="bg-gray-700 hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-gray-600 text-white px-3 py-0.5 rounded w-full text-center whitespace-nowrap"
+                onClick={() => window.open(button.url, "_blank")}
+              >
+                <a href={button.url} target="_blank" rel="noopener noreferrer">
+                  {button.label}
                 </a>
               </button>
             ))}
           </div>
         </div>
+      )}
 
-        {/* Mail */}
+      {/* Mail セクション */}
+      {mailCategory && (
         <div className="flex items-center mb-2">
-          <h3 className="text-end text-sm font-semibold text-gray-100 mr-2 w-20 whitespace-nowrap">Mail</h3>
+          <h3 className="text-end text-sm font-semibold text-gray-100 mr-2 w-20 whitespace-nowrap">{mailCategory.heading}</h3>
           <div className="grid grid-cols-2 gap-2 w-full">
-            {[
-              { href: "http://www.intra.daikin.co.jp/email/encrypt/", label: "暗号メール" },
-              { href: "http://www.intra.daikin.co.jp/email/filesend/", label: "宅配メール" },
-            ].map((item, index) => (
-              <button key={index} className="bg-gray-700 hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-gray-600 text-white px-3 py-0.5 rounded w-full text-center whitespace-nowrap">
-                <a href={item.href} target="_blank" rel="noopener noreferrer">
-                  {item.label}
+            {mailCategory.buttons.map((button, index) => (
+              <button
+                key={`mail-${index}`}
+                className="bg-gray-700 hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-gray-600 text-white px-3 py-0.5 rounded w-full text-center whitespace-nowrap"
+                onClick={() => window.open(button.url, "_blank")}
+              >
+                <a href={button.url} target="_blank" rel="noopener noreferrer">
+                  {button.label}
                 </a>
               </button>
             ))}
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
