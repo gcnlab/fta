@@ -21,7 +21,7 @@ export default function FolderLinks() {
   };
 
   return (
-    <div className="p-8 border border-gray-600 min-w-[500px] min-h-[250px] bg-transparent relative">
+    <div className="p-8 border border-gray-600 min-w-[500px] min-h-[250px] bg-transparent relative flex-shrink-0">
       <h2 className="text-lg font-semibold text-gray-100 mb-4 whitespace-nowrap">Folder Links</h2>
       <p className="text-gray-400 mb-2 text-xs text-end whitespace-nowrap">Copy Path to Clipboard</p>
 
@@ -30,7 +30,7 @@ export default function FolderLinks() {
           message="コピーしました"
           position={tooltipPosition}
           visible={tooltipVisible}
-          duration={1000}
+          duration={350}
           onClose={() => setTooltipVisible(false)}
         />
       )}

@@ -1,10 +1,10 @@
-// /app/contents/hom/MainContent.tsx
+// /app/contents/home/MainContent.tsx
 
 'use client';
 
 export default function MainContent() {
   return (
-    <div className="p-8 border border-gray-600 min-w-[500px] min-h-[250px] bg-transparent relative">
+    <div className="p-8 border border-gray-600 min-w-[500px] min-h-[250px] bg-transparent relative flex-shrink-0">
       <h2 className="text-lg font-semibold text-gray-100 mb-4 whitespace-nowrap">Intra Web Apps</h2>
 
       <div className="absolute top-0 right-0 p-8">
@@ -14,7 +14,7 @@ export default function MainContent() {
       </div>
 
       {/* Products Sections */}
-      <div className="item-center mb-2">
+      <div className="items-center mb-2">
         <p className="text-gray-400 mb-2 text-xs text-end whitespace-nowrap">Shift+Click for Console</p>
 
         {/* GSE開発 */}
@@ -85,7 +85,7 @@ export default function MainContent() {
       <hr className="border-gray-700" style={{ width: '90%', margin: '8px auto' }} />
 
       {/* その他セクション */}
-      <div className="item-center mb-4">
+      <div className="items-center mb-4">
         {/* 申請 */}
         <div className="flex items-center mb-2">
           <h3 className="text-end text-sm font-semibold text-gray-100 mr-2 w-20 whitespace-nowrap">申請</h3>
