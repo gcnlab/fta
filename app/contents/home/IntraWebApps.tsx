@@ -1,8 +1,8 @@
-// /app/contents/home/MainContent.tsx
+// /app/contents/home/IntraWebApps.tsx
 
 'use client';
 
-export default function MainContent() {
+export default function IntraWebApps() {
   return (
     <div className="p-8 border border-gray-600 min-w-[500px] min-h-[250px] bg-transparent relative flex-shrink-0">
       <h2 className="text-lg font-semibold text-gray-100 mb-4 whitespace-nowrap">Intra Web Apps</h2>

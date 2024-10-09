@@ -2,7 +2,7 @@
 
 'use client';
 
-import MainContent from './contents/home/MainContent';
+import MainContent from './contents/home/IntraWebApps';
 import ClockDisplay from './contents/home/ClockDisplay';
 import FolderLinks from './contents/home/FolderLinks';
 import AdditionalContents from './contents/home/AdditionalContents';
