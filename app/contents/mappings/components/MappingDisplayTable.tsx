@@ -19,7 +19,8 @@ interface MappingDisplayTableProps {
     handleCellChange: (rowIndex: number, cellIndex: number, value: string) => void;
     handleCellDoubleClick: (rowIndex: number, cellIndex: number) => void;
     editingCell: { row: number, col: number } | null;
-    setEditingCell: (cell: { row: number, col: number } | null) => void; // 追加
+    setEditingCell: (cell: { row: number, col: number } | null) => void;
+    isTemporaryMapping: boolean; // 追加
 }
 
 const MappingDisplayTable: React.FC<MappingDisplayTableProps> = ({
@@ -36,7 +37,8 @@ const MappingDisplayTable: React.FC<MappingDisplayTableProps> = ({
     handleCellChange,
     handleCellDoubleClick,
     editingCell,
-    setEditingCell, // 追加
+    setEditingCell,
+    isTemporaryMapping,
 }) => {
     return (
         <>
@@ -64,11 +66,10 @@ const MappingDisplayTable: React.FC<MappingDisplayTableProps> = ({
                             {mappingData.columns.map((col) => (
                                 <th
                                     key={col.colPos}
-                                    className="p-1 text-left"
+                                    className={`p-1 text-left ${isTemporaryMapping ? 'text-blue-500' : 'text-black'}`}
                                     style={{
                                         border: 'none',
                                         fontSize: '10px',
-                                        color: 'black',
                                         padding: '0px 0px 0px 7px'
                                     }}
                                 >

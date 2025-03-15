@@ -483,7 +483,8 @@ export default function MappingPage() {
                     handleCellChange={handleCellChange}
                     handleCellDoubleClick={handleCellDoubleClick}
                     editingCell={editingCell}
-                    setEditingCell={setEditingCell} // 追加
+                    setEditingCell={setEditingCell}
+                    isTemporaryMapping={isTemporaryMapping}
                 />
             )}
 
