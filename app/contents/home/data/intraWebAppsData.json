@@ -1,7 +1,7 @@
 [
     {
       "category": "SPECIAL",
-      "heading": "",
+      "heading": null,
       "buttons": [
         {
           "label": "GitLab",
@@ -66,6 +66,11 @@
       "category": "INTRA3",
       "heading": "申請",
       "buttons": [
+        {
+          "label": "梅新座席利用",
+          "url": "https://t80451803j2f8br7.itpm.masterscope.jp/itpm/common/login/",
+          "shiftUrl": null
+        },
         {
           "label": "ITPM",
           "url": "https://t80451803j2f8br7.itpm.masterscope.jp/itpm/common/login/",

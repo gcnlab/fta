@@ -1,3 +1,5 @@
+// /app/contents/home/FolderLinks.tsx
+
 'use client';
 
 import React, { useState } from 'react';
@@ -32,9 +34,9 @@ export default function FolderLinks() {
   };
 
   return (
-    <div className="p-8 border border-gray-600 min-w-[500px] min-h-[250px] bg-transparent relative flex-shrink-0">
+    <div className="p-8 pt-4 pb-4 border border-gray-600 bg-transparent relative flex-shrink-0">
       <h2 className="text-lg font-semibold text-gray-100 mb-4 whitespace-nowrap">Folder Links</h2>
-      <p className="text-gray-400 mb-2 text-xs text-end whitespace-nowrap">Copy Path to Clipboard</p>
+      <p className="text-gray-400 mb-1 text-xs text-end whitespace-nowrap">Copy Path to Clipboard</p>
 
       {tooltipVisible && (
         <Tooltip
@@ -51,7 +53,7 @@ export default function FolderLinks() {
         <div key={index}>
           {/* カテゴリごとの処理 */}
           {category.category === "LINK1" ? (
-            <div className="flex items-center mb-0">
+            <div className="flex items-center mb-2">
               <div className="grid grid-cols-1 gap-2 w-full">
                 {category.buttons.map((button, btnIndex) => (
                   <button

@@ -1,4 +1,4 @@
-// /app/contents/home/IntraWebApp.tsx
+// /app/contents/home/IntraWebApps.tsx
 
 'use client';
 
@@ -19,19 +19,19 @@ interface CategoryData {
 
 export default function IntraWebApp() {
   // 各カテゴリを個別に取得
-  const specialCategory = data.find((category: CategoryData) => category.category === "SPECIAL");
-  const gseCategory = data.find((category: CategoryData) => category.category === "INTRA1");
-  const gioCategory = data.find((category: CategoryData) => category.category === "INTRA2");
-  const submissionCategory = data.find((category: CategoryData) => category.category === "INTRA3");
-  const mailCategory = data.find((category: CategoryData) => category.category === "INTRA4");
+  const specialCategory = data.find((category) => category.category === "SPECIAL");
+  const gseCategory = data.find((category) => category.category === "INTRA1");
+  const gioCategory = data.find((category) => category.category === "INTRA2");
+  const submissionCategory = data.find((category) => category.category === "INTRA3");
+  const mailCategory = data.find((category) => category.category === "INTRA4");
 
   return (
-    <div className="p-8 border border-gray-600 min-w-[500px] min-h-[250px] bg-transparent relative flex-shrink-0">
+    <div className="p-8 pt-4 pb-4 border border-gray-600 bg-transparent relative flex-shrink-0">
       <h2 className="text-lg font-semibold text-gray-100 mb-4 whitespace-nowrap">Intra Web Apps</h2>
 
       {/* SPECIAL カテゴリのボタン（GitLab） */}
       {specialCategory && specialCategory.buttons.map((button, index) => (
-        <div key={`special-${index}`} className="absolute top-0 right-0 p-8">
+        <div key={`special-${index}`} className="absolute top-0 right-4 p-4">
           <button className="bg-gray-700 hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-gray-600 text-white px-3 py-1 rounded w-28 text-center whitespace-nowrap">
             <a href={button.url} target="_blank" rel="noopener noreferrer">{button.label}</a>
           </button>
@@ -39,7 +39,7 @@ export default function IntraWebApp() {
       ))}
 
       {/* Shift+Click の説明 */}
-      <p className="text-gray-400 mb-2 text-xs text-end whitespace-nowrap">Shift+Click for Console</p>
+      <p className="text-gray-400 mb-1 text-xs text-end whitespace-nowrap">Shift+Click for Console</p>
 
       {/* GSE開発 セクション */}
       {gseCategory && (
@@ -103,7 +103,7 @@ export default function IntraWebApp() {
       {submissionCategory && (
         <div className="flex items-center mb-2">
           <h3 className="text-end text-sm font-semibold text-gray-100 mr-2 w-20 whitespace-nowrap">{submissionCategory.heading}</h3>
-          <div className="grid grid-cols-2 gap-2 w-full">
+          <div className="grid grid-cols-3 gap-2 w-full">
             {submissionCategory.buttons.map((button, index) => (
               <button
                 key={`submission-${index}`}

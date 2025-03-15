@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 export default function AdditionalContents() {
   return (
-    <div className="p-8 border border-gray-600 min-w-[500px] min-h-[250px] bg-transparent">
+    <div className="p-8 pt-4 pb-4 border border-gray-600 bg-transparent">
       <h2 className="text-lg font-semibold text-gray-100 whitespace-nowrap">Additional Contents</h2>
 
       <br />

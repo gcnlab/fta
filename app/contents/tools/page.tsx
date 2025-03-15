@@ -87,7 +87,7 @@ export default function Page() {
         </div>
 
         {/* 選択されたツールに基づいてWhitePanelを表示 */}
-        <div className="h-auto min-h-64 mt-2 p-2 bg-gray-100 rounded-md border border-gray-300">
+        <div className="h-auto min-h-64 mt-4 p-4 bg-gray-100 rounded-md border border-gray-300">
           {selectedTool === "Time Zone" ? (
             <WhitePanel height="360px">
               <TimeZoneViewer />

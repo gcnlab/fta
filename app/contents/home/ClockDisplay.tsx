@@ -27,7 +27,7 @@ export default function ClockDisplay() {
   };
 
   return (
-    <div className="p-8 border border-gray-600 min-w-[500px] min-h-[250px] bg-transparent text-right">
+    <div className="p-8 pt-4 pb-4 border border-gray-600 bg-transparent text-right">
       <h2 className="text-lg font-semibold text-gray-100 whitespace-nowrap">Current Date and Time</h2>
       <p className="text-base text-gray-400 whitespace-nowrap">{formatDate(currentTime!)}</p>
       <p className="text-lg text-gray-200 whitespace-nowrap">{currentTime?.toLocaleTimeString()}</p>
@@ -54,3 +54,4 @@ export default function ClockDisplay() {
     </div>
   );
 }
+

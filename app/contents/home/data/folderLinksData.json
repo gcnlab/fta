@@ -1,7 +1,87 @@
 [
-    { "category": "LINK1", "heading": null, "buttons": [{ "label": "問い合せ・仕様変更・不具合対応（周辺システム）", "url": "G:\\共有ドライブ\\DKI_zA-3_開発１部_化学_共有_SPIS\\03_SPIS\\20_フォロー業務　問合・依頼対応一覧\\問い合せ・仕様変更・不具合対応（周辺システム）", "shiftUrl": null }] },
-    { "category": "LINK2", "heading": null, "buttons": [{ "label": "定例運用", "url": "G:\\共有ドライブ\\DKI_A-3_開発１部_化学_共有\\01_化学Gr_LVL3\\運用B01　運用業務\\U010　定例運用", "shiftUrl": null }, { "label": "業務報告（WBS）", "url": "G:\\共有ドライブ\\DKI_A-3_開発１部_化学_共有\\01_化学Gr_LVL3\\管理\\50　化学Grミーティング\\業務報告（アイスター）", "shiftUrl": null }, { "label": "作業実績", "url": "G:\\共有ドライブ\\DKI_A-3_開発１部_化学_共有\\01_化学Gr_LVL3\\管理\\99　★作業実績", "shiftUrl": null }] },
-    { "category": "LINK3", "heading": "GSE開発", "buttons": [{ "label": "DB-d", "url": "\\\\10.219.7.76\\d$", "shiftUrl": null }, { "label": "DB-e", "url": "\\\\10.219.7.76\\e$", "shiftUrl": null }, { "label": "AP-d", "url": "\\\\10.219.7.77\\d$", "shiftUrl": null }, { "label": "AP-e", "url": "\\\\10.219.7.77\\e$", "shiftUrl": null }] },
-    { "category": "LINK4", "heading": "GIO開発", "buttons": [{ "label": "DB-d", "url": "\\\\10.219.7.49\\d$", "shiftUrl": null }, { "label": "DB-e", "url": "\\\\10.219.7.49\\e$", "shiftUrl": null }, { "label": "AP-d", "url": "\\\\10.219.7.50\\d$", "shiftUrl": null }, { "label": "AP-e", "url": "\\\\10.219.7.50\\e$", "shiftUrl": null }] }
-  ]
+    {
+      "category": "LINK1",
+      "heading": null,
+      "buttons": [
+        {
+          "label": "問い合せ・仕様変更・不具合対応（周辺システム）",
+          "url": "G:\\共有ドライブ\\DKI_zA-3_開発１部_化学_共有_SPIS\\03_SPIS\\20_フォロー業務　問合・依頼対応一覧\\問い合せ・仕様変更・不具合対応（周辺システム）",
+          "shiftUrl": null
+        }
+      ]
+    },
+    {
+      "category": "LINK2",
+      "heading": null,
+      "buttons": [
+        {
+          "label": "定例運用",
+          "url": "G:\\共有ドライブ\\DKI_A-3_開発１部_化学_共有\\01_化学Gr_LVL3\\運用B01　運用業務\\U010　定例運用",
+          "shiftUrl": null
+        },
+        {
+          "label": "業務報告（WBS）",
+          "url": "G:\\共有ドライブ\\DKI_A-3_開発１部_化学_共有\\01_化学Gr_LVL3\\管理\\50　化学Grミーティング\\業務報告（アイスター）",
+          "shiftUrl": null
+        },
+        {
+          "label": "作業実績",
+          "url": "G:\\共有ドライブ\\DKI_A-3_開発１部_化学_共有\\01_化学Gr_LVL3\\管理\\99　★作業実績",
+          "shiftUrl": null
+        }
+      ]
+    },
+    {
+      "category": "LINK3",
+      "heading": "GSE開発",
+      "buttons": [
+        {
+          "label": "DB-d",
+          "url": "\\\\10.219.7.76\\d$",
+          "shiftUrl": null
+        },
+        {
+          "label": "DB-e",
+          "url": "\\\\10.219.7.76\\e$",
+          "shiftUrl": null
+        },
+        {
+          "label": "AP-d",
+          "url": "\\\\10.219.7.77\\d$",
+          "shiftUrl": null
+        },
+        {
+          "label": "AP-e",
+          "url": "\\\\10.219.7.77\\e$",
+          "shiftUrl": null
+        }
+      ]
+    },
+    {
+      "category": "LINK4",
+      "heading": "GIO開発",
+      "buttons": [
+        {
+          "label": "DB-d",
+          "url": "\\\\10.219.7.49\\d$",
+          "shiftUrl": null
+        },
+        {
+          "label": "DB-e",
+          "url": "\\\\10.219.7.49\\e$",
+          "shiftUrl": null
+        },
+        {
+          "label": "AP-d",
+          "url": "\\\\10.219.7.50\\d$",
+          "shiftUrl": null
+        },
+        {
+          "label": "AP-e",
+          "url": "\\\\10.219.7.50\\e$",
+          "shiftUrl": null
+        }
+      ]
+    }
+]
   
