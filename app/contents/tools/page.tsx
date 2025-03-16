@@ -6,6 +6,7 @@ import { MainButton } from "@/app/components/MainButton";
 import { useState, useEffect } from 'react';
 import { WhitePanel } from "@/app/components/WhitePanel";
 import TimeZoneViewer from "./components/TimeZoneViewer";
+import FileUpload from "./components/FileUpload";
 
 export default function Page() {
   const [selectedTool, setSelectedTool] = useState<string | null>(null);
@@ -69,11 +70,19 @@ export default function Page() {
             isActive={activeToggle === "Log4j Parser"}
             onToggle={() => handleButtonClick("Log4j Parser")}
           />
+          
+          <MainButton
+            label="File Upload"
+            isToggle={true}
+            isActive={activeToggle === "File Upload"}
+            onToggle={() => handleButtonClick("File Upload")}
+          />
+          
           {/* ダミーボタン */}
           <MainButton label="" isDummy={true} />
 
           {/* ダミーボタン (8つ) */}
-          {[...Array(4)].map((_, index) => (
+          {[...Array(3)].map((_, index) => (
             <MainButton
               key={index}
               label="&nbsp;"
@@ -91,6 +100,10 @@ export default function Page() {
           {selectedTool === "Time Zone" ? (
             <WhitePanel height="360px">
               <TimeZoneViewer />
+            </WhitePanel>
+          ) : selectedTool === "File Upload" ? (
+            <WhitePanel height="360px">
+              <FileUpload />
             </WhitePanel>
           ) : (
             selectedTool && (

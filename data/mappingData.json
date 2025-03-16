@@ -29,7 +29,8 @@
         { "colPos": 11, "filePos":  34, "hdName": "CAPACITY",          "hdNameJ": "容積"                                 },
         { "colPos": 12, "filePos":  35, "hdName": "CAPACITY_UOM",      "hdNameJ": "容積単位"                             },
         { "colPos": 13, "filePos":  79, "hdName": "PLANT_ITEM_STATUS", "hdNameJ": "プラント共通品目ステータス"           },
-        { "colPos": 14, "filePos":  10, "hdName": "CLIENT_DELETE_FLG", "hdNameJ": "クライアントレベルでの品目削除フラグ" }
+        { "colPos": 14, "filePos":  10, "hdName": "CLIENT_DELETE_FLG", "hdNameJ": "クライアントレベルでの品目削除フラグ" },
+        { "colPos": 15, "filePos":  28, "hdName": "NORMAL_TEXT",       "hdNameJ": "標準テキスト"                         }
       ]
     },
   
