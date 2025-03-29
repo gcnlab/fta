@@ -1,3 +1,5 @@
+// /app/contents/tools/components/FileUpload.tsx
+
 import React, { useState } from 'react';
 
 const FileUpload: React.FC = () => {
