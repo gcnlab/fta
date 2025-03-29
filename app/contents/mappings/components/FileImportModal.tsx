@@ -1,3 +1,5 @@
+// /app/contents/mappings/components/FileImportModal.tsx
+
 import React, { useState, useEffect } from 'react';
 import { MappingData } from '../types';
 
