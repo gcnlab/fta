@@ -8,6 +8,7 @@ import { MappingData } from '../types';
 import MappingDisplayTable from '../components/MappingDisplayTable';
 import MappingModal from '../MappingModal'; // 必要に応じてパスを確認してください
 import Tooltip from '../../../components/Tooltip';
+import FileImportModal from '../components/FileImportModal';
 
 // 定数として行数制限を定義
 const MAX_ROWS = 1000;
@@ -40,6 +41,8 @@ export default function MappingPage() {
 
     const [isTemporaryMapping, setIsTemporaryMapping] = useState<boolean>(false); // 一時的マッピング適用フラグ
 
+    const [showFileImportModal, setShowFileImportModal] = useState(false); // ファイル取り込みモーダルの表示状態
+
     const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
         if (e.key === 'Tab') {
             e.preventDefault(); // デフォルトのタブ移動を防止
@@ -56,6 +59,13 @@ export default function MappingPage() {
                 textarea.selectionStart = textarea.selectionEnd = start + 1;
             }, 0);
         }
+    };
+
+    // ファイルからのデータ取り込み処理
+    const handleImportFromFile = (data: string) => {
+        setInputData(data);
+        // 必要に応じて取り込み後に自動的にマッピングを行う場合は以下を有効化
+        // handleParse(mappingData);
     };
 
     // 一時的マッピング適用時の処理
@@ -429,6 +439,14 @@ export default function MappingPage() {
                     >
                         戻る
                     </button>
+
+                    {/* 新規追加: ファイルから取り込みボタン */}
+                    <button
+                        onClick={() => setShowFileImportModal(true)}
+                        className="px-2 py-1 text-xs bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-700 active:bg-blue-800 transition-all"
+                    >
+                        ファイルから取り込み
+                    </button>
                 </div>
 
                 {/* 右側のボタン群 */}
@@ -452,6 +470,15 @@ export default function MappingPage() {
                     </button>
                 </div>
             </div>
+
+            {/* ファイル取り込みモーダル */}
+            {showFileImportModal && (
+                <FileImportModal
+                    onClose={() => setShowFileImportModal(false)}
+                    onImport={handleImportFromFile}
+                    mappingData={mappingData}
+                />
+            )}
 
             {/* モーダル表示 */}
             {showModal && mappingData && (
@@ -499,6 +526,6 @@ export default function MappingPage() {
                 />
             )}
         </div>
-    ); // 修正: ')' を追加
+    );
 }
 
