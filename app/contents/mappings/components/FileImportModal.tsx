@@ -9,9 +9,21 @@ interface FilterCondition {
   value: string;
 }
 
+export interface ImportModalState {
+  selectedFile: File | null;
+  fileContent: string;
+  filters: FilterCondition[];
+  fileStats: {
+    totalChars: number;
+    totalLines: number;
+    filteredChars: number;
+    filteredLines: number;
+  };
+}
+
 interface FileImportModalProps {
   onClose: () => void;
-  onImport: (data: string) => void;
+  onImport: (data: string, modalState: ImportModalState) => void;
   mappingData: MappingData;
 }
 
@@ -38,13 +50,11 @@ const FileImportModal: React.FC<FileImportModalProps> = ({
   const [showColumnSelector, setShowColumnSelector] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const MAX_CHARS = 1000000; // 100万文字の制限
+  const MAX_CHARS = 1000000;
 
-  // ファイル選択時の処理
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
-
     setSelectedFile(file);
     setLoading(true);
     const reader = new FileReader();
@@ -63,31 +73,26 @@ const FileImportModal: React.FC<FileImportModalProps> = ({
     reader.readAsText(file);
   };
 
-  // フィルタ追加ボタンのハンドラ
   const handleAddFilter = () => {
     setShowColumnSelector(true);
   };
 
-  // カラム選択時のハンドラ（既に存在する項目を選択）
   const handleColumnSelect = (columnIndex: number) => {
     setFilters([...filters, { id: nextFilterId, columnIndex, value: '' }]);
     setNextFilterId(nextFilterId + 1);
     setShowColumnSelector(false);
   };
 
-  // フィルタ削除ボタンのハンドラ
   const handleRemoveFilter = (filterId: number) => {
     setFilters(filters.filter(filter => filter.id !== filterId));
   };
 
-  // フィルタ値変更時のハンドラ
   const handleFilterValueChange = (filterId: number, value: string) => {
     setFilters(filters.map(filter =>
       filter.id === filterId ? { ...filter, value } : filter
     ));
   };
 
-  // フィルタ適用処理
   useEffect(() => {
     if (!fileContent) return;
     if (filters.length === 0) {
@@ -99,26 +104,25 @@ const FileImportModal: React.FC<FileImportModalProps> = ({
       }));
       return;
     }
-
-    // フィルタ処理を実行
     const linesArr = fileContent.split('\n');
     const filteredLines = linesArr.filter(line => {
       const columns = line.split('\t');
       return filters.every(filter => {
-        if (filter.columnIndex >= columns.length) return false;
-        return columns[filter.columnIndex].includes(filter.value);
+        const colMapping = mappingData.columns[filter.columnIndex];
+        const filePos = colMapping.filePos;
+        if (filePos > columns.length) return false;
+        // 補正: filePosは1オリジンなので、実際はfilePos - 1の位置をチェック
+        return columns[filePos - 1].includes(filter.value);
       });
     });
-
     const filteredContent = filteredLines.join('\n');
     setFileStats(prev => ({
       ...prev,
       filteredChars: filteredContent.length,
       filteredLines: filteredLines.length,
     }));
-  }, [fileContent, filters]);
+  }, [fileContent, filters, mappingData.columns]);
 
-  // インポートボタンのハンドラ
   const handleImport = () => {
     if (!fileContent) return;
     const linesArr = fileContent.split('\n');
@@ -126,11 +130,19 @@ const FileImportModal: React.FC<FileImportModalProps> = ({
       if (filters.length === 0) return true;
       const columns = line.split('\t');
       return filters.every(filter => {
-        if (filter.columnIndex >= columns.length) return false;
-        return columns[filter.columnIndex].includes(filter.value);
+        const colMapping = mappingData.columns[filter.columnIndex];
+        const filePos = colMapping.filePos;
+        if (filePos > columns.length) return false;
+        // 補正: filePos は1オリジンなので filePos - 1 を使用
+        return columns[filePos - 1].includes(filter.value);
       });
     });
-    onImport(filteredLines.join('\n'));
+    onImport(filteredLines.join('\n'), {
+      selectedFile,
+      fileContent,
+      filters,
+      fileStats,
+    });
     onClose();
   };
 
@@ -138,24 +150,17 @@ const FileImportModal: React.FC<FileImportModalProps> = ({
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white p-4 rounded-md shadow-lg w-4/5 max-h-[80vh] overflow-auto">
         <h2 className="text-lg font-semibold mb-4">ファイルからデータを取り込む</h2>
-        
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700 mb-1">
             ファイルを選択
           </label>
-          <input
-            type="file"
-            onChange={handleFileSelect}
-            className="block w-full text-sm"
-          />
+          <input type="file" onChange={handleFileSelect} className="block w-full text-sm" />
         </div>
-        
         {loading && (
           <div className="text-center py-4">
             <p>読み込み中...</p>
           </div>
         )}
-        
         {selectedFile && !loading && (
           <>
             <div className="grid grid-cols-2 gap-4 mb-4">
@@ -166,18 +171,13 @@ const FileImportModal: React.FC<FileImportModalProps> = ({
                 <p className="text-xs">総文字数: {fileStats.totalChars.toLocaleString()}</p>
                 <p className="text-xs">総行数: {fileStats.totalLines.toLocaleString()}</p>
               </div>
-              
               <div className="border p-2 rounded-md">
                 <h3 className="font-medium text-sm mb-1">フィルタ後</h3>
                 <p className="text-xs">フィルタ後文字数: {fileStats.filteredChars.toLocaleString()}</p>
                 <p className="text-xs">フィルタ後行数: {fileStats.filteredLines.toLocaleString()}</p>
-                <p className={`text-xs ${fileStats.filteredChars > MAX_CHARS ? 'text-red-500 font-bold' : 'text-green-500'}`}>
-                  制限: {fileStats.filteredChars > MAX_CHARS ? '超過' : '範囲内'} 
-                  ({Math.round(fileStats.filteredChars / MAX_CHARS * 100)}%)
-                </p>
               </div>
             </div>
-            
+
             <div className="mb-4">
               <div className="flex justify-between items-center mb-2">
                 <h3 className="font-medium text-sm">フィルタ条件</h3>
@@ -188,7 +188,6 @@ const FileImportModal: React.FC<FileImportModalProps> = ({
                   フィルタを追加
                 </button>
               </div>
-              
               {filters.length === 0 ? (
                 <p className="text-xs text-gray-500">フィルタ条件はありません</p>
               ) : (
@@ -218,7 +217,7 @@ const FileImportModal: React.FC<FileImportModalProps> = ({
                 </div>
               )}
             </div>
-            
+
             {showColumnSelector && (
               <div className="border p-2 rounded-md mb-4">
                 <h3 className="font-medium text-sm mb-1">項目を選択</h3>
@@ -237,7 +236,6 @@ const FileImportModal: React.FC<FileImportModalProps> = ({
             )}
           </>
         )}
-        
         <div className="flex justify-end space-x-2 mt-4">
           <button
             onClick={onClose}
