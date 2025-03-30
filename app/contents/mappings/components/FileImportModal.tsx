@@ -1,12 +1,12 @@
 // /app/contents/mappings/components/FileImportModal.tsx
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MappingData } from '../types';
 
 interface FilterCondition {
   id: number;
   columnIndex: number;
-  inputValue: string; // チェックボックス廃止、テキスト入力のみでフィルタ条件を管理
+  inputValue: string;
 }
 
 export interface ImportModalState {
@@ -49,6 +49,7 @@ const FileImportModal: React.FC<FileImportModalProps> = ({
   const [nextFilterId, setNextFilterId] = useState(1);
   const [loading, setLoading] = useState(false);
   const [showColumnSelector, setShowColumnSelector] = useState(false);
+  const [skipFirstRow, setSkipFirstRow] = useState(true);
 
   const MAX_CHARS = 1000000;
 
@@ -61,12 +62,13 @@ const FileImportModal: React.FC<FileImportModalProps> = ({
     reader.onload = (e) => {
       const content = e.target?.result as string;
       setFileContent(content);
-      const lines = content.split('\n');
+      const allLines = content.split('\n');
+      const effectiveLines = skipFirstRow ? allLines.slice(1) : allLines;
       setFileStats({
-        totalChars: content.length,
-        totalLines: lines.length,
-        filteredChars: content.length,
-        filteredLines: lines.length,
+        totalChars: effectiveLines.join('\n').length,
+        totalLines: effectiveLines.length,
+        filteredChars: effectiveLines.join('\n').length,
+        filteredLines: effectiveLines.length,
       });
       setLoading(false);
     };
@@ -90,6 +92,8 @@ const FileImportModal: React.FC<FileImportModalProps> = ({
   };
 
   const handleColumnSelect = (index: number) => {
+    // mappingData.columns[index]は候補として使える前提なのでfilePosが0なら無視
+    if (mappingData.columns[index].filePos === 0) return;
     setFilters([...filters, { id: nextFilterId, columnIndex: index, inputValue: '' }]);
     setNextFilterId(nextFilterId + 1);
     setShowColumnSelector(false);
@@ -98,28 +102,28 @@ const FileImportModal: React.FC<FileImportModalProps> = ({
   // フィルタ適用処理
   useEffect(() => {
     if (!fileContent) return;
+    let linesArr = fileContent.split('\n');
+    if (skipFirstRow) {
+      linesArr = linesArr.slice(1);
+    }
     // フィルタがない場合はそのまま全件採用
     if (filters.length === 0) {
-      const noFilterLines = fileContent.split('\n');
       setFileStats((prev) => ({
         ...prev,
-        filteredChars: fileContent.length,
-        filteredLines: noFilterLines.length,
+        filteredChars: linesArr.join('\n').length,
+        filteredLines: linesArr.length,
       }));
       return;
     }
-    const linesArr = fileContent.split('\n');
     const filteredLines = linesArr.filter((line) => {
       const columns = line.split('\t');
-      // 各フィルタ条件ごとに対象列（1オリジンなので filePos - 1）をチェック
       return filters.every((filter) => {
         const colMapping = mappingData.columns[filter.columnIndex];
         const filePos = colMapping.filePos;
         if (filePos > columns.length) return false;
-        // filePos は 1 オリジンなので、columns[filePos - 1] でアクセス
         const cellValue = columns[filePos - 1];
-        return filter.inputValue.trim() 
-          ? cellValue.includes(filter.inputValue.trim()) 
+        return filter.inputValue.trim()
+          ? cellValue.includes(filter.inputValue.trim())
           : true;
       });
     });
@@ -129,11 +133,14 @@ const FileImportModal: React.FC<FileImportModalProps> = ({
       filteredChars: filteredContent.length,
       filteredLines: filteredLines.length,
     }));
-  }, [fileContent, filters, mappingData.columns]);
+  }, [fileContent, filters, mappingData.columns, skipFirstRow]);
 
   const handleImport = () => {
     if (!fileContent) return;
-    const linesArr = fileContent.split('\n');
+    let linesArr = fileContent.split('\n');
+    if (skipFirstRow) {
+      linesArr = linesArr.slice(1);
+    }
     const filteredLines = linesArr.filter((line) => {
       if (filters.length === 0) return true;
       const columns = line.split('\t');
@@ -161,10 +168,19 @@ const FileImportModal: React.FC<FileImportModalProps> = ({
       <div className="bg-white p-4 rounded-md shadow-lg w-4/5 max-h-[80vh] overflow-auto">
         <h2 className="text-lg font-semibold mb-4">ファイルからデータを取り込む</h2>
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            ファイルを選択
-          </label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">ファイルを選択</label>
           <input type="file" onChange={handleFileSelect} className="block w-full text-sm" />
+        </div>
+        <div className="mb-4">
+          <label className="inline-flex items-center text-sm text-gray-700">
+            <input
+              type="checkbox"
+              checked={skipFirstRow}
+              onChange={(e) => setSkipFirstRow(e.target.checked)}
+              className="form-checkbox"
+            />
+            <span className="ml-2">先頭行を除外する</span>
+          </label>
         </div>
         {loading && (
           <div className="text-center py-4">
@@ -193,15 +209,18 @@ const FileImportModal: React.FC<FileImportModalProps> = ({
               <div className="mb-4 border p-2 rounded-md">
                 <p className="text-sm font-medium mb-2">追加する項目を選択</p>
                 <div className="grid grid-cols-2 gap-2">
-                  {mappingData.columns.map((col, index) => (
-                    <button
-                      key={index}
-                      onClick={() => handleColumnSelect(index)}
-                      className="px-2 py-1 text-xs bg-gray-100 hover:bg-gray-200 text-left rounded-md"
-                    >
-                      {col.hdNameJ || col.hdName || `列 ${index + 1}`}
-                    </button>
-                  ))}
+                  {mappingData.columns.map((col, index) => {
+                    if (col.filePos === 0) return null;
+                    return (
+                      <button
+                        key={index}
+                        onClick={() => handleColumnSelect(index)}
+                        className="px-2 py-1 text-xs bg-gray-100 hover:bg-gray-200 text-left rounded-md"
+                      >
+                        {col.hdNameJ || col.hdName || `列 ${index + 1}`}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             )}
@@ -228,7 +247,6 @@ const FileImportModal: React.FC<FileImportModalProps> = ({
                           mappingData.columns[filter.columnIndex]?.hdName ||
                           `列 ${filter.columnIndex + 1}`}:
                       </span>
-                      {/* チェックボックス関連の処理は削除し、テキスト入力のみを表示 */}
                       <input
                         type="text"
                         value={filter.inputValue}

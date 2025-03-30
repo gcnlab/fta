@@ -4,7 +4,7 @@
       "tableName"  : "Z_DWH_MST_MARM",
       "tableNameJ" : "品目数量単位",
       "columns"    : [
-        { "colPos": 1, "filePos": 2, "hdName": "ITEM_CD",         "hdNameJ": "会社コード"     },
+        { "colPos": 1, "filePos": 2, "hdName": "ITEM_CD",         "hdNameJ": "品目コード"     },
         { "colPos": 2, "filePos": 3, "hdName": "CONV_UOM",        "hdNameJ": "代替数量単位"   },
         { "colPos": 3, "filePos": 4, "hdName": "CONV_NUM_VALUE",  "hdNameJ": "換算値（分子）" },
         { "colPos": 4, "filePos": 5, "hdName": "CONV_DEN_VALUE",  "hdNameJ": "換算値（分母）" }
