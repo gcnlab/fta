@@ -2,14 +2,14 @@
 
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useMemo, useEffect } from 'react';
 import { useParams } from 'next/navigation';
-import { useEffect } from 'react';
 import { MappingData } from '../types';
 import MappingDisplayTable from '../components/MappingDisplayTable';
 import MappingModal from '../MappingModal'; // 必要に応じてパスを確認してください
 import Tooltip from '../../../components/Tooltip';
 import FileImportModal from '../components/FileImportModal';
+import FilterSettingsModal, { FilterCondition } from '../components/FilterSettingsModal';
 
 // 定数として行数制限を定義
 const MAX_ROWS = 1000;
@@ -17,7 +17,7 @@ const MAX_ROWS = 1000;
 interface ImportModalState {
   selectedFile: File | null;
   fileContent: string;
-  filters: Array<{ id: number; columnIndex: number; value: string[] }>; // value を string[] に変更
+  filters: Array<{ id: number; columnIndex: number; value: string[]; inputValue?: string }>;
   fileStats: {
     totalChars: number;
     totalLines: number;
@@ -56,6 +56,19 @@ export default function MappingPage() {
 
   const [showFileImportModal, setShowFileImportModal] = useState(false); // ファイル取り込みモーダルの表示状態
 
+  // フィルタ設定モーダルの表示状態
+  const [showFilterSettings, setShowFilterSettings] = useState<boolean>(false);
+
+  // ファイル取り込みで得たコンテンツ
+  const [fileContent, setFileContent] = useState<string>('');
+  // 新規追加: フィルタ設定状態を保持
+  const [filterConditions, setFilterConditions] = useState<FilterCondition[]>([]);
+
+  // ファイル入力用の参照
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Tab') {
       e.preventDefault(); // デフォルトのタブ移動を防止
@@ -74,10 +87,51 @@ export default function MappingPage() {
     }
   };
 
-  // ファイルからのデータ取り込み処理
+  // ファイルからのデータ取り込み処理（500万文字以内、かつ5000行以内ならそのまま、超える場合は最初の1000行だけ取り込み）
+  const handleFileImport = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    setSelectedFile(file);
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const content = e.target?.result as string;
+      const charLimit = 5000000;
+      const lines = content.split('\n');
+      const lineLimit = 5000;
+      if (content.length > charLimit || lines.length > lineLimit) {
+        alert(`ファイルが大きすぎるため、最初の1000行のみ取り込みます。`);
+        const trimmedContent = lines.slice(0, 1000).join('\n');
+        setFileContent(trimmedContent);
+        setInputData(trimmedContent); // 取り込み内容を入力ボックスに反映
+        setFilterConditions([]);
+      } else {
+        setFileContent(content);
+        setInputData(content); // 取り込み内容を入力ボックスに反映
+        setFilterConditions([]);
+      }
+    };
+    reader.readAsText(file);
+  };
+
   const handleImportFromFile = (data: string, modalState: ImportModalState) => {
-    setInputData(data);
-    setShowFileImportModal(false);
+    // modalState.fileContent に取り込んだ内容が入っています
+    setFileContent(modalState.fileContent);
+    // もし modalState.selectedFile があれば、selectedFile も更新
+    if (modalState.selectedFile) {
+      setSelectedFile(modalState.selectedFile);
+    }
+    // 必要に応じてフィルタ設定状態も更新
+    setFilterConditions(
+      modalState.filters.map(f => ({
+        ...f,
+        inputValue: f.inputValue || ''
+      }))
+    );
+  };
+
+  // ファイル入力ダイアログを開くためのハンドラー
+  const openFileDialog = () => {
+    fileInputRef.current?.click();
   };
 
   // 一時的マッピング適用時の処理
@@ -145,6 +199,96 @@ export default function MappingPage() {
 
     loadMappingData();
   }, [fileId]);
+
+  // フィルタ条件が変更された（またはフィルタ適用時に再読み込みする）たびに、selectedFile から再読み込みしてフィルタ処理を適用
+  useEffect(() => {
+    console.log("[Filter] useEffect triggered", { filterConditions, selectedFile });
+    if (!selectedFile) {
+      console.log("[Filter] No selected file.");
+      return;
+    }
+    // 以下、既存のフィルタ処理
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const content = e.target?.result as string;
+      console.log("[Filter] File content loaded. Length:", content.length);
+      if (filterConditions.length === 0) {
+        console.log(
+          "[Filter] No filter conditions applied. Full content loaded. Length:",
+          content.length
+        );
+        setInputData(content);
+      } else {
+        const lines = content.split('\n');
+        console.log(`[Filter] File has ${lines.length} lines.`);
+        const filteredLines = lines.filter((line, lineIndex) => {
+          const cols = line.split('\t');
+          const conditionResults = filterConditions.map((filter, filterIndex) => {
+            const cell = cols[filter.columnIndex] ?? '';
+            if (filter.inputValue.trim() !== '') {
+              const match = cell.indexOf(filter.inputValue.trim()) !== -1;
+              return {
+                filterIndex,
+                type: "text",
+                column: filter.columnIndex,
+                cell,
+                condition: filter.inputValue.trim(),
+                match,
+              };
+            } else {
+              // チェックボックス条件（初期状態は全選択）
+              if (filter.value.length === 0) {
+                return {
+                  filterIndex,
+                  type: "checkbox",
+                  column: filter.columnIndex,
+                  cell,
+                  condition: "No condition (pass)",
+                  match: true,
+                };
+              } else {
+                const match = filter.value.includes(cell);
+                return {
+                  filterIndex,
+                  type: "checkbox",
+                  column: filter.columnIndex,
+                  cell,
+                  condition: filter.value,
+                  match,
+                };
+              }
+            }
+          });
+          console.log(
+            `[Filter] Line ${lineIndex}: "${line}" conditions:`,
+            conditionResults
+          );
+          const linePassed = conditionResults.every(cr => cr.match);
+          if (!linePassed) {
+            console.log(`[Filter] Line ${lineIndex} filtered out.`);
+          } else {
+            console.log(`[Filter] Line ${lineIndex} passed.`);
+          }
+          return linePassed;
+        });
+        console.log(
+          "[Filter] Total lines:",
+          lines.length,
+          "=> Filtered lines:",
+          filteredLines.length
+        );
+        setInputData(filteredLines.join('\n'));
+      }
+    };
+    reader.onerror = (err) => {
+      console.error("[Filter] Error reading file:", err);
+    };
+    reader.readAsText(selectedFile);
+  }, [filterConditions, selectedFile]);
+
+  useEffect(() => {
+    console.log("[MappingPage] Mounted", { selectedFile, filterConditions, fileContent });
+  }, []);
 
   // テキストボックスに貼り付けられたデータを処理
   const handlePaste = (e: React.ClipboardEvent<HTMLTextAreaElement>) => {
@@ -458,11 +602,20 @@ export default function MappingPage() {
 
           {/* 新規追加: ファイルから取り込みボタン */}
           <button
-            onClick={() => setShowFileImportModal(true)}
+            onClick={openFileDialog}
             className="px-2 py-1 text-xs bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-700 active:bg-blue-800 transition-all"
           >
             ファイルから取り込み
           </button>
+          {/* ファイルが取り込まれていればフィルタ設定ボタンを右側に配置 */}
+          {fileContent && (
+            <button
+              onClick={() => setShowFilterSettings(true)}
+              className="px-2 py-1 text-xs bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600 active:bg-blue-700 transition-all"
+            >
+              フィルタ設定
+            </button>
+          )}
         </div>
 
         {/* 右側のボタン群 */}
@@ -487,12 +640,34 @@ export default function MappingPage() {
         </div>
       </div>
 
+      {/* 隠しファイル選択 */}
+      <input
+        type="file"
+        ref={fileInputRef}
+        onChange={handleFileImport}
+        style={{ display: 'none' }}
+      />
+
       {/* ファイル取り込みモーダル */}
       {showFileImportModal && mappingData && (
         <FileImportModal
           mappingData={mappingData}
           onClose={() => setShowFileImportModal(false)}
           onImport={(data, modalState) => handleImportFromFile(data, modalState)}
+        />
+      )}
+
+      {/* フィルタ設定モーダル */}
+      {showFilterSettings && mappingData && (
+        <FilterSettingsModal
+          onClose={() => setShowFilterSettings(false)}
+          onSave={(filters: FilterCondition[]) => {
+            setFilterConditions(filters);
+            setShowFilterSettings(false);
+          }}
+          fileContent={fileContent}
+          mappingData={mappingData}
+          initialFilters={filterConditions}
         />
       )}
 
