@@ -17,7 +17,7 @@ const MAX_ROWS = 1000;
 interface ImportModalState {
   selectedFile: File | null;
   fileContent: string;
-  filters: Array<{ id: number; columnIndex: number; value: string }>;
+  filters: Array<{ id: number; columnIndex: number; value: string[] }>; // value を string[] に変更
   fileStats: {
     totalChars: number;
     totalLines: number;
