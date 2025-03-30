@@ -6,7 +6,7 @@ import { MappingData } from '../types';
 interface FilterCondition {
   id: number;
   columnIndex: number;
-  value: string[]; // チェック済みの値
+  inputValue: string; // チェックボックス廃止、テキスト入力のみでフィルタ条件を管理
 }
 
 export interface ImportModalState {
@@ -26,58 +26,6 @@ interface FileImportModalProps {
   onImport: (data: string, modalState: ImportModalState) => void;
   mappingData: MappingData;
 }
-
-// チェックボックス付きのドロップダウンコンポーネント
-interface FilterDropdownProps {
-  options: string[];
-  selected: string[];
-  onChange: (selected: string[]) => void;
-}
-
-// FilterDropdown コンポーネントのボタンに幅を指定
-const FilterDropdown: React.FC<FilterDropdownProps> = ({ options, selected, onChange }) => {
-  const [open, setOpen] = useState(false);
-  const toggleOpen = () => setOpen(!open);
-  return (
-    <div className="relative inline-block">
-      <button
-        type="button"
-        onClick={toggleOpen}
-        style={{ width: '30ch' }}
-        className="px-2 py-1 border rounded text-xs"
-      >
-        {selected.length > 0 ? selected.join(', ') : '(空白)'}
-      </button>
-      {open && (
-        <div className="absolute z-10 bg-white border rounded mt-1 p-2">
-          {options.map((option) => (
-            <div key={option}>
-              <label className="flex items-center">
-                <input
-                  type="checkbox"
-                  checked={selected.includes(option)}
-                  onChange={(e) => {
-                    let newSelected: string[];
-                    if (e.target.checked) {
-                      newSelected = [...selected, option];
-                    } else {
-                      newSelected = selected.filter((s) => s !== option);
-                    }
-                    onChange(newSelected);
-                  }}
-                  className="mr-1"
-                />
-                <span className="text-xs">
-                  {option === '' ? '(空白)' : option}
-                </span>
-              </label>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-};
 
 const FileImportModal: React.FC<FileImportModalProps> = ({
   onClose,
@@ -99,8 +47,8 @@ const FileImportModal: React.FC<FileImportModalProps> = ({
   });
   const [filters, setFilters] = useState<FilterCondition[]>([]);
   const [nextFilterId, setNextFilterId] = useState(1);
-  const [showColumnSelector, setShowColumnSelector] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showColumnSelector, setShowColumnSelector] = useState(false);
 
   const MAX_CHARS = 1000000;
 
@@ -129,48 +77,28 @@ const FileImportModal: React.FC<FileImportModalProps> = ({
     setShowColumnSelector(true);
   };
 
-  const handleColumnSelect = (columnIndex: number) => {
-    // 既存の columnOptionsMap から対象列の全オプションを初期値として設定
-    const defaultSelected = columnOptionsMap[columnIndex] || [];
-    setFilters([...filters, { id: nextFilterId, columnIndex, value: defaultSelected }]);
-    setNextFilterId(nextFilterId + 1);
-    setShowColumnSelector(false);
-  };
-
   const handleRemoveFilter = (filterId: number) => {
     setFilters(filters.filter((filter) => filter.id !== filterId));
   };
 
-  const handleFilterValueChange = (filterId: number, value: string[]) => {
+  const handleFilterValueChange = (filterId: number, value: string) => {
     setFilters(
       filters.map((filter) =>
-        filter.id === filterId ? { ...filter, value } : filter
+        filter.id === filterId ? { ...filter, inputValue: value } : filter
       )
     );
   };
 
-  // 各列ごとに、fileContent からユニークな値一覧（必ず空文字含む）をまとめた辞書を生成
-  const columnOptionsMap = useMemo(() => {
-    const map: { [columnIndex: number]: string[] } = {};
-    if (!fileContent) return map;
-    mappingData.columns.forEach((col, index) => {
-      const adjusted = col.filePos - 1;
-      const opts = new Set<string>();
-      opts.add(''); // 空文字（空白）を必ず追加
-      fileContent.split('\n').forEach((line) => {
-        const cols = line.split('\t');
-        if (cols.length > adjusted) {
-          opts.add(cols[adjusted]);
-        }
-      });
-      map[index] = Array.from(opts);
-    });
-    return map;
-  }, [fileContent, mappingData.columns]);
+  const handleColumnSelect = (index: number) => {
+    setFilters([...filters, { id: nextFilterId, columnIndex: index, inputValue: '' }]);
+    setNextFilterId(nextFilterId + 1);
+    setShowColumnSelector(false);
+  };
 
   // フィルタ適用処理
   useEffect(() => {
     if (!fileContent) return;
+    // フィルタがない場合はそのまま全件採用
     if (filters.length === 0) {
       const noFilterLines = fileContent.split('\n');
       setFileStats((prev) => ({
@@ -183,15 +111,16 @@ const FileImportModal: React.FC<FileImportModalProps> = ({
     const linesArr = fileContent.split('\n');
     const filteredLines = linesArr.filter((line) => {
       const columns = line.split('\t');
+      // 各フィルタ条件ごとに対象列（1オリジンなので filePos - 1）をチェック
       return filters.every((filter) => {
         const colMapping = mappingData.columns[filter.columnIndex];
         const filePos = colMapping.filePos;
         if (filePos > columns.length) return false;
-        // 補正: filePos は 1 オリジンなので対象は columns[filePos - 1]
+        // filePos は 1 オリジンなので、columns[filePos - 1] でアクセス
         const cellValue = columns[filePos - 1];
-        return filter.value.length > 0
-          ? filter.value.includes(cellValue)
-          : cellValue === '';
+        return filter.inputValue.trim() 
+          ? cellValue.includes(filter.inputValue.trim()) 
+          : true;
       });
     });
     const filteredContent = filteredLines.join('\n');
@@ -213,9 +142,9 @@ const FileImportModal: React.FC<FileImportModalProps> = ({
         const filePos = colMapping.filePos;
         if (filePos > columns.length) return false;
         const cellValue = columns[filePos - 1];
-        return filter.value.length > 0
-          ? filter.value.includes(cellValue)
-          : cellValue === '';
+        return filter.inputValue.trim()
+          ? cellValue.includes(filter.inputValue.trim())
+          : true;
       });
     });
     onImport(filteredLines.join('\n'), {
@@ -259,6 +188,25 @@ const FileImportModal: React.FC<FileImportModalProps> = ({
               </div>
             </div>
 
+            {/* フィルタ条件の表示部分直前に、候補選択 UI を追加 */}
+            {showColumnSelector && (
+              <div className="mb-4 border p-2 rounded-md">
+                <p className="text-sm font-medium mb-2">追加する項目を選択</p>
+                <div className="grid grid-cols-2 gap-2">
+                  {mappingData.columns.map((col, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handleColumnSelect(index)}
+                      className="px-2 py-1 text-xs bg-gray-100 hover:bg-gray-200 text-left rounded-md"
+                    >
+                      {col.hdNameJ || col.hdName || `列 ${index + 1}`}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* フィルタ条件の表示 */}
             <div className="mb-4">
               <div className="flex justify-between items-center mb-2">
                 <h3 className="font-medium text-sm">フィルタ条件</h3>
@@ -273,51 +221,33 @@ const FileImportModal: React.FC<FileImportModalProps> = ({
                 <p className="text-xs text-gray-500">フィルタ条件はありません</p>
               ) : (
                 <div className="space-y-2">
-                  {filters.map((filter) => {
-                    const options = columnOptionsMap[filter.columnIndex] || [];
-                    return (
-                      <div key={filter.id} className="flex items-center space-x-2">
-                        <span className="text-xs font-medium">
-                          {mappingData.columns[filter.columnIndex]?.hdNameJ ||
-                            mappingData.columns[filter.columnIndex]?.hdName ||
-                            `列 ${filter.columnIndex + 1}`}:
-                        </span>
-                        <FilterDropdown
-                          options={options}
-                          selected={filter.value}
-                          onChange={(selected) =>
-                            handleFilterValueChange(filter.id, selected)
-                          }
-                        />
-                        <button
-                          onClick={() => handleRemoveFilter(filter.id)}
-                          className="px-2 py-1 text-xs bg-red-500 text-white rounded-md hover:bg-red-600"
-                        >
-                          削除
-                        </button>
-                      </div>
-                    );
-                  })}
+                  {filters.map((filter) => (
+                    <div key={filter.id} className="flex items-center space-x-2">
+                      <span className="text-xs font-medium">
+                        {mappingData.columns[filter.columnIndex]?.hdNameJ ||
+                          mappingData.columns[filter.columnIndex]?.hdName ||
+                          `列 ${filter.columnIndex + 1}`}:
+                      </span>
+                      {/* チェックボックス関連の処理は削除し、テキスト入力のみを表示 */}
+                      <input
+                        type="text"
+                        value={filter.inputValue}
+                        onChange={(e) => handleFilterValueChange(filter.id, e.target.value)}
+                        placeholder="フィルタ条件を入力"
+                        className="px-2 py-1 text-xs border rounded-md"
+                        style={{ textAlign: 'left' }}
+                      />
+                      <button
+                        onClick={() => handleRemoveFilter(filter.id)}
+                        className="px-2 py-1 text-xs bg-red-500 text-white rounded-md hover:bg-red-600"
+                      >
+                        削除
+                      </button>
+                    </div>
+                  ))}
                 </div>
               )}
             </div>
-
-            {showColumnSelector && (
-              <div className="border p-2 rounded-md mb-4">
-                <h3 className="font-medium text-sm mb-1">項目を選択</h3>
-                <div className="max-h-32 overflow-y-auto grid grid-cols-2 gap-1">
-                  {mappingData.columns.map((column, index) => (
-                    <button
-                      key={index}
-                      onClick={() => handleColumnSelect(index)}
-                      className="px-2 py-1 text-xs bg-gray-100 hover:bg-gray-200 text-left rounded-md"
-                    >
-                      {column.hdNameJ || column.hdName || `列 ${index + 1}`}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
           </>
         )}
         <div className="flex justify-end space-x-2 mt-4">
