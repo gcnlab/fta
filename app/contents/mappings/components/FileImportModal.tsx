@@ -51,7 +51,8 @@ const FileImportModal: React.FC<FileImportModalProps> = ({
   const [showColumnSelector, setShowColumnSelector] = useState(false);
   const [skipFirstRow, setSkipFirstRow] = useState(true);
 
-  const MAX_CHARS = 1000000;
+  const MAX_CHARS = 5000000;
+  const MAX_ROWS = 5000;
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -277,12 +278,19 @@ const FileImportModal: React.FC<FileImportModalProps> = ({
           </button>
           <button
             onClick={handleImport}
-            disabled={!selectedFile || loading || fileStats.filteredChars > MAX_CHARS}
-            className={`px-3 py-1 text-sm rounded-md ${
-              !selectedFile || loading || fileStats.filteredChars > MAX_CHARS
+            disabled={
+              !selectedFile ||
+              loading ||
+              fileStats.filteredChars > MAX_CHARS ||
+              fileStats.filteredLines > 5000
+            }
+            className={`px-3 py-1 text-sm rounded-md ${!selectedFile ||
+                loading ||
+                fileStats.filteredChars > MAX_CHARS ||
+                fileStats.filteredLines > 5000
                 ? 'bg-gray-400 cursor-not-allowed'
                 : 'bg-blue-500 hover:bg-blue-600 text-white'
-            }`}
+              }`}
           >
             取り込む
           </button>

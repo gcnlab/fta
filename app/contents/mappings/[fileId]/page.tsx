@@ -12,7 +12,7 @@ import Tooltip from '../../../components/Tooltip';
 import FileImportModal from '../components/FileImportModal';
 
 // 定数として行数制限を定義
-const MAX_ROWS = 1000;
+const MAX_ROWS = 5000;
 
 interface ImportModalState {
   selectedFile: File | null;
