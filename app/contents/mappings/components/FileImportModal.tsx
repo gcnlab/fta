@@ -7,6 +7,7 @@ interface FilterCondition {
   id: number;
   columnIndex: number;
   inputValue: string;
+  comparisonOp: 'eq' | 'neq';
 }
 
 export interface ImportModalState {
@@ -93,21 +94,31 @@ const FileImportModal: React.FC<FileImportModalProps> = ({
   };
 
   const handleColumnSelect = (index: number) => {
-    // mappingData.columns[index]は候補として使える前提なのでfilePosが0なら無視
     if (mappingData.columns[index].filePos === 0) return;
-    setFilters([...filters, { id: nextFilterId, columnIndex: index, inputValue: '' }]);
+    setFilters([
+      ...filters,
+      { id: nextFilterId, columnIndex: index, inputValue: '', comparisonOp: 'eq' }
+    ]);
     setNextFilterId(nextFilterId + 1);
     setShowColumnSelector(false);
   };
 
-  // フィルタ適用処理
+  const handleToggleComparison = (filterId: number) => {
+    setFilters(
+      filters.map((filter) =>
+        filter.id === filterId
+          ? { ...filter, comparisonOp: filter.comparisonOp === 'eq' ? 'neq' : 'eq' }
+          : filter
+      )
+    );
+  };
+
   useEffect(() => {
     if (!fileContent) return;
     let linesArr = fileContent.split('\n');
     if (skipFirstRow) {
       linesArr = linesArr.slice(1);
     }
-    // フィルタがない場合はそのまま全件採用
     if (filters.length === 0) {
       setFileStats((prev) => ({
         ...prev,
@@ -123,9 +134,13 @@ const FileImportModal: React.FC<FileImportModalProps> = ({
         const filePos = colMapping.filePos;
         if (filePos > columns.length) return false;
         const cellValue = columns[filePos - 1];
-        return filter.inputValue.trim()
-          ? cellValue.includes(filter.inputValue.trim())
-          : true;
+        const filterVal = filter.inputValue.trim();
+        if (filterVal === '') return true;
+        if (filter.comparisonOp === 'eq') {
+          return filterVal === '空白' ? cellValue === '' : cellValue === filterVal;
+        } else {
+          return filterVal === '空白' ? cellValue !== '' : cellValue !== filterVal;
+        }
       });
     });
     const filteredContent = filteredLines.join('\n');
@@ -150,9 +165,13 @@ const FileImportModal: React.FC<FileImportModalProps> = ({
         const filePos = colMapping.filePos;
         if (filePos > columns.length) return false;
         const cellValue = columns[filePos - 1];
-        return filter.inputValue.trim()
-          ? cellValue.includes(filter.inputValue.trim())
-          : true;
+        const filterVal = filter.inputValue.trim();
+        if (filterVal === '') return true;
+        if (filter.comparisonOp === 'eq') {
+          return filterVal === '空白' ? cellValue === '' : cellValue === filterVal;
+        } else {
+          return filterVal === '空白' ? cellValue !== '' : cellValue !== filterVal;
+        }
       });
     });
     onImport(filteredLines.join('\n'), {
@@ -205,7 +224,6 @@ const FileImportModal: React.FC<FileImportModalProps> = ({
               </div>
             </div>
 
-            {/* フィルタ条件の表示部分直前に、候補選択 UI を追加 */}
             {showColumnSelector && (
               <div className="mb-4 border p-2 rounded-md">
                 <p className="text-sm font-medium mb-2">追加する項目を選択</p>
@@ -232,7 +250,6 @@ const FileImportModal: React.FC<FileImportModalProps> = ({
               </div>
             )}
 
-            {/* フィルタ条件の表示 */}
             <div className="mb-4">
               <div className="flex justify-between items-center mb-2">
                 <h3 className="font-medium text-sm">フィルタ条件</h3>
@@ -246,29 +263,41 @@ const FileImportModal: React.FC<FileImportModalProps> = ({
               {filters.length === 0 ? (
                 <p className="text-xs text-gray-500">フィルタ条件はありません</p>
               ) : (
-                <div className="space-y-2">
+                <div className="space-y-1">
                   {filters.map((filter) => (
                     <div
                       key={filter.id}
-                      className="grid grid-cols-3 gap-2 items-start"
+                      className="grid grid-cols-3 gap-x-1 gap-y-1 items-center"
                     >
-                      <span className="text-xs font-medium text-left">
+                      {/* 項目ラベル */}
+                      <span className="text-xs font-medium text-left whitespace-nowrap">
                         {mappingData.columns[filter.columnIndex]?.hdNameJ ||
                           mappingData.columns[filter.columnIndex]?.hdName ||
-                          `列 ${filter.columnIndex + 1}`}:
+                          `列 ${filter.columnIndex + 1}`}
                       </span>
-                      <input
-                        type="text"
-                        value={filter.inputValue}
-                        onChange={(e) =>
-                          handleFilterValueChange(filter.id, e.target.value)
-                        }
-                        placeholder="フィルタ条件を入力"
-                        className="px-2 py-1 text-xs border rounded-md text-left"
-                      />
+                      {/* トグルボタンと入力フィールドをまとめたコンテナ */}
+                      <div className="flex items-center gap-x-0.5">
+                        <button
+                          onClick={() => handleToggleComparison(filter.id)}
+                          className="px-1 py-1 text-xs border rounded-md w-fit"
+                        >
+                          {filter.comparisonOp === 'eq' ? '=' : '≠'}
+                        </button>
+                        <input
+                          list={`option-${filter.id}`}
+                          value={filter.inputValue}
+                          onChange={(e) => handleFilterValueChange(filter.id, e.target.value)}
+                          placeholder="フィルタ条件を入力"
+                          className="px-1 py-1 text-xs border rounded-md text-left"
+                        />
+                        <datalist id={`option-${filter.id}`}>
+                          <option value="空白" />
+                        </datalist>
+                      </div>
+                      {/* 削除ボタン */}
                       <button
                         onClick={() => handleRemoveFilter(filter.id)}
-                        className="px-2 py-1 text-xs bg-red-500 text-white rounded-md hover:bg-red-600"
+                        className="px-1 py-1 text-xs bg-red-500 text-white rounded-md hover:bg-red-600 w-fit"
                       >
                         削除
                       </button>
