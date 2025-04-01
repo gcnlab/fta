@@ -66,11 +66,19 @@ const FileImportModal: React.FC<FileImportModalProps> = ({
       setFileContent(content);
       const allLines = content.split('\n');
       const effectiveLines = skipFirstRow ? allLines.slice(1) : allLines;
+      // 総文字数／総行数はファイル全体の値
+      const totalChars = content.length;
+      const totalLines = allLines.length;
+      // filtered の文字数は、各行の長さの合計＋（行数 - 1） ※行数がゼロでなければ改行分も加算
+      const filteredChars = effectiveLines.length > 0 
+        ? effectiveLines.reduce((sum, line) => sum + line.length, 0) + (effectiveLines.length - 1)
+        : 0;
+      const filteredLines = effectiveLines.length;
       setFileStats({
-        totalChars: effectiveLines.join('\n').length,
-        totalLines: effectiveLines.length,
-        filteredChars: effectiveLines.join('\n').length,
-        filteredLines: effectiveLines.length,
+        totalChars,
+        totalLines,
+        filteredChars,
+        filteredLines,
       });
       setLoading(false);
     };
@@ -115,45 +123,57 @@ const FileImportModal: React.FC<FileImportModalProps> = ({
 
   useEffect(() => {
     if (!fileContent) return;
-    let linesArr = fileContent.split('\n');
-    if (skipFirstRow) {
-      linesArr = linesArr.slice(1);
+    // ファイル内の改行コードを判定
+    const newline = fileContent.indexOf('\r\n') > -1 ? '\r\n' : '\n';
+    // ファイル全体をsplit：split後、末尾が空文字の場合は除外（行数にはカウントしない）
+    let allLines = fileContent.split(/\r?\n/);
+    if (allLines.length && allLines[allLines.length - 1] === '') {
+      allLines.pop();
     }
+    const totalLines = allLines.length;
+    const totalChars = fileContent.length; // 改行もファイル内の実態に合わせてカウント（例：CRLFは2文字）
+
+    // skipFirstRow が true の場合、先頭行を除外した行群を対象にする
+    const effectiveLines = skipFirstRow ? allLines.slice(1) : allLines;
+    let filteredLines: string[];
     if (filters.length === 0) {
-      setFileStats((prev) => ({
-        ...prev,
-        filteredChars: linesArr.join('\n').length,
-        filteredLines: linesArr.length,
-      }));
-      return;
-    }
-    const filteredLines = linesArr.filter((line) => {
-      const columns = line.split('\t');
-      return filters.every((filter) => {
-        const colMapping = mappingData.columns[filter.columnIndex];
-        const filePos = colMapping.filePos;
-        if (filePos > columns.length) return false;
-        const cellValue = columns[filePos - 1];
-        const filterVal = filter.inputValue.trim();
-        if (filterVal === '') return true;
-        if (filter.comparisonOp === 'eq') {
-          return filterVal === '空白' ? cellValue === '' : cellValue === filterVal;
-        } else {
-          return filterVal === '空白' ? cellValue !== '' : cellValue !== filterVal;
-        }
+      filteredLines = effectiveLines;
+    } else {
+      filteredLines = effectiveLines.filter((line) => {
+        const columns = line.split('\t');
+        return filters.every((filter) => {
+          const colMapping = mappingData.columns[filter.columnIndex];
+          const filePos = colMapping.filePos;
+          if (filePos > columns.length) return false;
+          const cellValue = columns[filePos - 1];
+          const filterVal = filter.inputValue.trim();
+          if (filterVal === '') return true;
+          if (filter.comparisonOp === 'eq') {
+            return filterVal === '空白' ? cellValue === '' : cellValue === filterVal;
+          } else {
+            return filterVal === '空白' ? cellValue !== '' : cellValue !== filterVal;
+          }
+        });
       });
-    });
-    const filteredContent = filteredLines.join('\n');
-    setFileStats((prev) => ({
-      ...prev,
-      filteredChars: filteredContent.length,
+    }
+    // フィルタ後の文字列は、各行を元の改行コードで連結して算出
+    const fChars = filteredLines.length > 0 ? filteredLines.join(newline).length : 0;
+    setFileStats({
+      totalChars,
+      totalLines,
+      filteredChars: fChars,
       filteredLines: filteredLines.length,
-    }));
+    });
   }, [fileContent, filters, mappingData.columns, skipFirstRow]);
 
   const handleImport = () => {
     if (!fileContent) return;
-    let linesArr = fileContent.split('\n');
+    const newline = fileContent.indexOf('\r\n') > -1 ? '\r\n' : '\n';
+    let linesArr = fileContent.split(/\r?\n/);
+    // 同様に末尾が空文字なら除外（行数としてはカウントしない）
+    if (linesArr.length && linesArr[linesArr.length - 1] === '') {
+      linesArr.pop();
+    }
     if (skipFirstRow) {
       linesArr = linesArr.slice(1);
     }
@@ -174,7 +194,7 @@ const FileImportModal: React.FC<FileImportModalProps> = ({
         }
       });
     });
-    onImport(filteredLines.join('\n'), {
+    onImport(filteredLines.join(newline), {
       selectedFile,
       fileContent,
       filters,
