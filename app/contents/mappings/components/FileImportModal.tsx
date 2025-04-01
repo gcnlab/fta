@@ -148,10 +148,28 @@ const FileImportModal: React.FC<FileImportModalProps> = ({
           const cellValue = columns[filePos - 1];
           const filterVal = filter.inputValue.trim();
           if (filterVal === '') return true;
+
+          // 複数条件に対応：カンマで分割し、空の文字列は除外
+          const conditions = filterVal.split(',').map(s => s.trim()).filter(s => s !== '');
+
+          // ワイルドカード(*)を含む条件に対応する関数
+          const matchCondition = (cond: string, value: string): boolean => {
+            if (cond === '空白') {
+              return value === '';
+            }
+            // 正規表現で評価するため、特殊文字をエスケープ（*以外）し、*を.*に変換
+            const escaped = cond.replace(/([.+?^${}()|\[\]\/\\])/g, '\\$1');
+            const pattern = '^' + escaped.replace(/\*/g, '.*') + '$';
+            const regex = new RegExp(pattern);
+            return regex.test(value);
+          };
+
           if (filter.comparisonOp === 'eq') {
-            return filterVal === '空白' ? cellValue === '' : cellValue === filterVal;
+            // "eq"の場合は、いずれかの条件にマッチすればOK
+            return conditions.some(cond => matchCondition(cond, cellValue));
           } else {
-            return filterVal === '空白' ? cellValue !== '' : cellValue !== filterVal;
+            // "neq"の場合は、どの条件にもマッチしなければOK
+            return conditions.every(cond => !matchCondition(cond, cellValue));
           }
         });
       });
@@ -187,10 +205,28 @@ const FileImportModal: React.FC<FileImportModalProps> = ({
         const cellValue = columns[filePos - 1];
         const filterVal = filter.inputValue.trim();
         if (filterVal === '') return true;
+
+        // 複数条件に対応：カンマで分割し、空の文字列は除外
+        const conditions = filterVal.split(',').map(s => s.trim()).filter(s => s !== '');
+
+        // ワイルドカード(*)を含む条件に対応する関数
+        const matchCondition = (cond: string, value: string): boolean => {
+          if (cond === '空白') {
+            return value === '';
+          }
+          // 正規表現で評価するため、特殊文字をエスケープ（*以外）し、*を.*に変換
+          const escaped = cond.replace(/([.+?^${}()|\[\]\/\\])/g, '\\$1');
+          const pattern = '^' + escaped.replace(/\*/g, '.*') + '$';
+          const regex = new RegExp(pattern);
+          return regex.test(value);
+        };
+
         if (filter.comparisonOp === 'eq') {
-          return filterVal === '空白' ? cellValue === '' : cellValue === filterVal;
+          // "eq"の場合は、いずれかの条件にマッチすればOK
+          return conditions.some(cond => matchCondition(cond, cellValue));
         } else {
-          return filterVal === '空白' ? cellValue !== '' : cellValue !== filterVal;
+          // "neq"の場合は、どの条件にもマッチしなければOK
+          return conditions.every(cond => !matchCondition(cond, cellValue));
         }
       });
     });
