@@ -212,11 +212,17 @@ const FileImportModal: React.FC<FileImportModalProps> = ({
                 <div className="grid grid-cols-2 gap-2">
                   {mappingData.columns.map((col, index) => {
                     if (col.filePos === 0) return null;
+                    const alreadySelected = filters.some(filter => filter.columnIndex === index);
                     return (
                       <button
                         key={index}
-                        onClick={() => handleColumnSelect(index)}
-                        className="px-2 py-1 text-xs bg-gray-100 hover:bg-gray-200 text-left rounded-md"
+                        onClick={() => !alreadySelected && handleColumnSelect(index)}
+                        disabled={alreadySelected}
+                        className={`px-2 py-1 text-xs text-left rounded-md ${
+                          alreadySelected
+                            ? 'bg-gray-300 cursor-not-allowed'
+                            : 'bg-gray-100 hover:bg-gray-200'
+                        }`}
                       >
                         {col.hdNameJ || col.hdName || `列 ${index + 1}`}
                       </button>
@@ -242,8 +248,11 @@ const FileImportModal: React.FC<FileImportModalProps> = ({
               ) : (
                 <div className="space-y-2">
                   {filters.map((filter) => (
-                    <div key={filter.id} className="flex items-center space-x-2">
-                      <span className="text-xs font-medium">
+                    <div
+                      key={filter.id}
+                      className="grid grid-cols-3 gap-2 items-start"
+                    >
+                      <span className="text-xs font-medium text-left">
                         {mappingData.columns[filter.columnIndex]?.hdNameJ ||
                           mappingData.columns[filter.columnIndex]?.hdName ||
                           `列 ${filter.columnIndex + 1}`}:
@@ -251,10 +260,11 @@ const FileImportModal: React.FC<FileImportModalProps> = ({
                       <input
                         type="text"
                         value={filter.inputValue}
-                        onChange={(e) => handleFilterValueChange(filter.id, e.target.value)}
+                        onChange={(e) =>
+                          handleFilterValueChange(filter.id, e.target.value)
+                        }
                         placeholder="フィルタ条件を入力"
-                        className="px-2 py-1 text-xs border rounded-md"
-                        style={{ textAlign: 'left' }}
+                        className="px-2 py-1 text-xs border rounded-md text-left"
                       />
                       <button
                         onClick={() => handleRemoveFilter(filter.id)}
