@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react';
 import { WhitePanel } from "@/app/components/WhitePanel";
 import TimeZoneViewer from "./components/TimeZoneViewer";
 import FileUpload from "./components/FileUpload";
+import SumUp from "./components/SumUp";
 
 export default function Page() {
   const [selectedTool, setSelectedTool] = useState<string | null>(null);
@@ -72,6 +73,13 @@ export default function Page() {
           />
           
           <MainButton
+            label="Sum Up"
+            isToggle={true}
+            isActive={activeToggle === "Sum Up"}
+            onToggle={() => handleButtonClick("Sum Up")}
+          />
+          
+          <MainButton
             label="File Upload"
             isToggle={true}
             isActive={activeToggle === "File Upload"}
@@ -82,7 +90,7 @@ export default function Page() {
           <MainButton label="" isDummy={true} />
 
           {/* ダミーボタン (8つ) */}
-          {[...Array(3)].map((_, index) => (
+          {[...Array(2)].map((_, index) => (
             <MainButton
               key={index}
               label="&nbsp;"
@@ -100,6 +108,10 @@ export default function Page() {
           {selectedTool === "Time Zone" ? (
             <WhitePanel height="360px">
               <TimeZoneViewer />
+            </WhitePanel>
+          ) : selectedTool === "Sum Up" ? (
+            <WhitePanel height="360px">
+              <SumUp />
             </WhitePanel>
           ) : selectedTool === "File Upload" ? (
             <WhitePanel height="360px">
