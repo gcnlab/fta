@@ -37,7 +37,7 @@ export default function Page() {
   return (
     <main className="bg-gray-100 p-2">
       <div className="mb-2 p-2 bg-white shadow-lg rounded-md border border-gray-300">
-        <h1 className="text-sm font-semibold text-gray-700 mb-2 text-left">Tools</h1>
+        <h1 className="text-base font-semibold text-gray-700 mb-4 text-left">Tools</h1>
 
         {/* ボタンパネル */}
         <div className="grid grid-cols-5 gap-2">

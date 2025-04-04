@@ -20,6 +20,12 @@ const SumUp: React.FC = () => {
     { name: 'c', value: 0 }
   ]);
 
+  const [editingValues, setEditingValues] = useState<{[key: string]: string}>({
+    a: '',
+    b: '',
+    c: ''
+  });
+
   const [calculations, setCalculations] = useState<Calculation[]>([
     { id: 1, formula: '', result: 0, isActive: false, editingFormula: '' },
     { id: 2, formula: '', result: 0, isActive: false, editingFormula: '' }
@@ -28,10 +34,40 @@ const SumUp: React.FC = () => {
   const [total, setTotal] = useState<number>(0);
 
   const handleVariableChange = (name: string, value: string) => {
-    const numValue = parseFloat(value.replace(/,/g, '')) || 0;
+    // 入力中の値をそのまま保持
+    setEditingValues(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleVariableBlur = (name: string, value: string) => {
+    // フォーカスアウト時に数値に変換
+    let numValue = 0;
+    try {
+      // 空文字列の場合は0
+      if (value.trim() === '') {
+        numValue = 0;
+      } else {
+        // カンマを除去して数値に変換
+        const processedValue = value.replace(/,/g, '');
+        if (!isNaN(parseFloat(processedValue))) {
+          numValue = parseFloat(processedValue);
+        }
+      }
+    } catch (e) {
+      numValue = 0;
+    }
+
     setVariables(variables.map(v => 
       v.name === name ? { ...v, value: numValue } : v
     ));
+
+    // 正しい表示形式に更新
+    setEditingValues(prev => ({
+      ...prev,
+      [name]: numValue === 0 ? '' : numValue.toLocaleString()
+    }));
   };
 
   const handleFormulaChange = (id: number, value: string) => {
@@ -120,9 +156,10 @@ const SumUp: React.FC = () => {
                           <div className="w-6 mr-2">{variable.name}</div>
                           <input
                             type="text"
-                            inputMode="numeric"
-                            value={variable.value === 0 ? '' : variable.value.toLocaleString()}
+                            inputMode="decimal"
+                            value={editingValues[variable.name]}
                             onChange={(e) => handleVariableChange(variable.name, e.target.value)}
+                            onBlur={(e) => handleVariableBlur(variable.name, e.target.value)}
                             className="w-[100px] h-8 px-2 text-center border rounded"
                           />
                         </div>
