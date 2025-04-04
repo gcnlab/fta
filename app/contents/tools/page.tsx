@@ -16,27 +16,27 @@ export default function Page() {
 
   const handleButtonClick = (toolName: string) => {
     if (activeToggle === toolName) {
-        setActiveToggle(null);
-        setSelectedTool(null);
-        localStorage.removeItem(SELECTED_TOOL_KEY);
+      setActiveToggle(null);
+      setSelectedTool(null);
+      localStorage.removeItem(SELECTED_TOOL_KEY);
     } else {
-        setActiveToggle(toolName);
-        setSelectedTool(toolName);
-        localStorage.setItem(SELECTED_TOOL_KEY, toolName);
+      setActiveToggle(toolName);
+      setSelectedTool(toolName);
+      localStorage.setItem(SELECTED_TOOL_KEY, toolName);
     }
   };
 
   useEffect(() => {
     const savedTool = localStorage.getItem(SELECTED_TOOL_KEY);
     if (savedTool) {
-        setSelectedTool(savedTool);
-        setActiveToggle(savedTool);
+      setSelectedTool(savedTool);
+      setActiveToggle(savedTool);
     }
   }, []);
 
   return (
-    <main className="bg-gray-100 p-2">
-      <div className="mb-2 p-2 bg-white shadow-lg rounded-md border border-gray-300">
+    <main className="bg-gray-100">
+      <div className="mb-2 p-4 bg-white shadow-lg rounded-md border border-gray-300">
         <h1 className="text-base font-semibold text-gray-700 mb-4 text-left">Tools</h1>
 
         {/* ボタンパネル */}
@@ -46,18 +46,6 @@ export default function Page() {
             isToggle={true}
             isActive={activeToggle === "Time Zone"}
             onToggle={() => handleButtonClick("Time Zone")}
-          />
-          <MainButton
-            label="受払計算シミュレータ"
-            isToggle={true}
-            isActive={activeToggle === "受払計算シミュレータ"}
-            onToggle={() => handleButtonClick("受払計算シミュレータ")}
-          />
-          <MainButton
-            label="原単位計算シミュレータ"
-            isToggle={true}
-            isActive={activeToggle === "原単位計算シミュレータ"}
-            onToggle={() => handleButtonClick("原単位計算シミュレータ")}
           />
           <MainButton
             label="JSON Parser"
@@ -71,21 +59,35 @@ export default function Page() {
             isActive={activeToggle === "Log4j Parser"}
             onToggle={() => handleButtonClick("Log4j Parser")}
           />
-          
+          <MainButton
+            label="受払計算シミュレータ"
+            isToggle={true}
+            isDummy={true}
+            isActive={activeToggle === "受払計算シミュレータ"}
+            onToggle={() => handleButtonClick("受払計算シミュレータ")}
+          />
+          <MainButton
+            label="原単位計算シミュレータ"
+            isToggle={true}
+            isDummy={true}
+            isActive={activeToggle === "原単位計算シミュレータ"}
+            onToggle={() => handleButtonClick("原単位計算シミュレータ")}
+          />
+
           <MainButton
             label="Sum Up"
             isToggle={true}
             isActive={activeToggle === "Sum Up"}
             onToggle={() => handleButtonClick("Sum Up")}
           />
-          
+
           <MainButton
             label="File Upload"
             isToggle={true}
             isActive={activeToggle === "File Upload"}
             onToggle={() => handleButtonClick("File Upload")}
           />
-          
+
           {/* ダミーボタン */}
           <MainButton label="" isDummy={true} />
 
