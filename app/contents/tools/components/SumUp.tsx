@@ -14,24 +14,39 @@ interface Calculation {
 }
 
 const SumUp: React.FC = () => {
-  const [variables, setVariables] = useState<Variable[]>([
-    { name: 'a', value: 0 },
-    { name: 'b', value: 0 },
-    { name: 'c', value: 0 }
-  ]);
-
-  const [editingValues, setEditingValues] = useState<{[key: string]: string}>({
-    a: '',
-    b: '',
-    c: ''
+  const [variables, setVariables] = useState<Variable[]>(() => {
+    const saved = localStorage.getItem('sumup-variables');
+    return saved ? JSON.parse(saved) : [
+      { name: 'a', value: 0 },
+      { name: 'b', value: 0 },
+      { name: 'c', value: 0 }
+    ];
   });
 
-  const [calculations, setCalculations] = useState<Calculation[]>([
-    { id: 1, formula: '', result: 0, isActive: false, editingFormula: '' },
-    { id: 2, formula: '', result: 0, isActive: false, editingFormula: '' }
-  ]);
+  const [editingValues, setEditingValues] = useState<{[key: string]: string}>(() => {
+    const saved = localStorage.getItem('sumup-editing-values');
+    return saved ? JSON.parse(saved) : {
+      a: '',
+      b: '',
+      c: ''
+    };
+  });
+
+  const [calculations, setCalculations] = useState<Calculation[]>(() => {
+    const saved = localStorage.getItem('sumup-calculations');
+    return saved ? JSON.parse(saved) : [
+      { id: 1, formula: '', result: 0, isActive: false, editingFormula: '' },
+      { id: 2, formula: '', result: 0, isActive: false, editingFormula: '' }
+    ];
+  });
 
   const [total, setTotal] = useState<number>(0);
+
+  useEffect(() => {
+    localStorage.setItem('sumup-variables', JSON.stringify(variables));
+    localStorage.setItem('sumup-editing-values', JSON.stringify(editingValues));
+    localStorage.setItem('sumup-calculations', JSON.stringify(calculations));
+  }, [variables, editingValues, calculations]);
 
   const handleVariableChange = (name: string, value: string) => {
     // 入力中の値をそのまま保持
@@ -42,17 +57,25 @@ const SumUp: React.FC = () => {
   };
 
   const handleVariableBlur = (name: string, value: string) => {
-    // フォーカスアウト時に数値に変換
     let numValue = 0;
     try {
       // 空文字列の場合は0
       if (value.trim() === '') {
         numValue = 0;
       } else {
-        // カンマを除去して数値に変換
+        // カンマを除去
         const processedValue = value.replace(/,/g, '');
-        if (!isNaN(parseFloat(processedValue))) {
-          numValue = parseFloat(processedValue);
+        
+        // 数式を評価
+        try {
+          // 数式を評価（変数は使用しない）
+          numValue = new Function('return ' + processedValue)();
+          // 数値でない場合は0
+          if (typeof numValue !== 'number' || isNaN(numValue)) {
+            numValue = 0;
+          }
+        } catch (e) {
+          numValue = 0;
         }
       }
     } catch (e) {
@@ -137,6 +160,23 @@ const SumUp: React.FC = () => {
     setTotal(activeTotal);
   }, [variables, calculations.map(c => c.formula).join(','), calculations.map(c => c.isActive).join(',')]);
 
+  const handleClear = () => {
+    // 計算式をクリア
+    setCalculations([]);
+    // 変数をリセット
+    setVariables([
+      { name: 'a', value: 0 },
+      { name: 'b', value: 0 },
+      { name: 'c', value: 0 }
+    ]);
+    // 編集中の値をリセット
+    setEditingValues({
+      a: '',
+      b: '',
+      c: ''
+    });
+  };
+
   return (
     <div className="p-4">
       <div className="max-w-[1000px] mx-auto">
@@ -187,12 +227,20 @@ const SumUp: React.FC = () => {
               <div className="px-5 h-[170px]">
                 <div className="flex justify-between items-center mb-3">
                   <div>計算式</div>
-                  <button
-                    onClick={addCalculation}
-                    className="h-7 px-4 bg-[#0D99FF] text-white text-sm rounded hover:bg-[#0D99FF]/90"
-                  >
-                    計算式を追加
-                  </button>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={addCalculation}
+                      className="h-7 px-4 bg-[#0D99FF] text-white text-sm rounded hover:bg-[#0D99FF]/90"
+                    >
+                      計算式を追加
+                    </button>
+                    <button
+                      onClick={handleClear}
+                      className="h-7 px-4 bg-gray-500 text-white text-sm rounded hover:bg-gray-600"
+                    >
+                      クリア
+                    </button>
+                  </div>
                 </div>
                 
                 <div className="h-[150px] overflow-y-auto">
