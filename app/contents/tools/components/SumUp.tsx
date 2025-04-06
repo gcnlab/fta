@@ -1,3 +1,5 @@
+// /app/contents/tools/components/SumUp.tsx
+
 import React, { useState, useEffect } from 'react';
 
 interface Variable {

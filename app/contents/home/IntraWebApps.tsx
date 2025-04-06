@@ -110,9 +110,7 @@ export default function IntraWebApp() {
                 className="bg-gray-700 hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-gray-600 text-white px-3 py-0.5 rounded w-full text-center whitespace-nowrap"
                 onClick={() => window.open(button.url, "_blank")}
               >
-                <a href={button.url} target="_blank" rel="noopener noreferrer">
-                  {button.label}
-                </a>
+                {button.label}
               </button>
             ))}
           </div>
@@ -130,9 +128,7 @@ export default function IntraWebApp() {
                 className="bg-gray-700 hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-gray-600 text-white px-3 py-0.5 rounded w-full text-center whitespace-nowrap"
                 onClick={() => window.open(button.url, "_blank")}
               >
-                <a href={button.url} target="_blank" rel="noopener noreferrer">
-                  {button.label}
-                </a>
+                {button.label}
               </button>
             ))}
           </div>
