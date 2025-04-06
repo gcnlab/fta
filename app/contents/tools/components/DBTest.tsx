@@ -129,12 +129,12 @@ export default function DBTest() {
                 {error && <div className="text-red-500 text-sm mt-4">{error}</div>}
 
                 {tableData && (
-                    <div className="mt-6 max-h-[200px] overflow-y-auto">
+                    <div className="mt-6 max-h-[165px] overflow-y-auto">
                         <table className="min-w-full border-collapse text-sm">
                             <thead className="sticky top-0 bg-gray-100">
                                 <tr>
                                     {tableData.columns?.map((column) => (
-                                        <th key={column.column_name} className="border px-2 py-1 text-left">
+                                        <th key={column.column_name} className="border px-2 py-[2px] text-left">
                                             {column.column_name}
                                             <span className="text-gray-500 text-xs ml-1">({column.data_type})</span>
                                         </th>
