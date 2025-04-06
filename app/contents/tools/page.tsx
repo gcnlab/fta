@@ -8,6 +8,7 @@ import { WhitePanel } from "@/app/components/WhitePanel";
 import TimeZoneViewer from "./components/TimeZoneViewer";
 import FileUpload from "./components/FileUpload";
 import SumUp from "./components/SumUp";
+import DBTest from "./components/DBTest";
 
 export default function Page() {
   const [selectedTool, setSelectedTool] = useState<string | null>(null);
@@ -88,11 +89,18 @@ export default function Page() {
             onToggle={() => handleButtonClick("File Upload")}
           />
 
+          <MainButton
+            label="DB Test"
+            isToggle={true}
+            isActive={activeToggle === "DB Test"}
+            onToggle={() => handleButtonClick("DB Test")}
+          />
+
           {/* ダミーボタン */}
           <MainButton label="" isDummy={true} />
 
           {/* ダミーボタン (8つ) */}
-          {[...Array(2)].map((_, index) => (
+          {[...Array(1)].map((_, index) => (
             <MainButton
               key={index}
               label="&nbsp;"
@@ -118,6 +126,10 @@ export default function Page() {
           ) : selectedTool === "File Upload" ? (
             <WhitePanel height="360px">
               <FileUpload />
+            </WhitePanel>
+          ) : selectedTool === "DB Test" ? (
+            <WhitePanel height="360px">
+              <DBTest />
             </WhitePanel>
           ) : (
             selectedTool && (
