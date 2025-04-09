@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 
 interface DbInfo {
     database: string;
+    availableDatabases: string[];
     schemas: string[];
     tablesBySchema: {
         schema: string;
@@ -21,6 +22,7 @@ interface TableData {
 
 export default function DBTest() {
     const [dbInfo, setDbInfo] = useState<DbInfo | null>(null);
+    const [selectedDatabase, setSelectedDatabase] = useState<string>('');
     const [selectedSchema, setSelectedSchema] = useState<string>('');
     const [selectedTable, setSelectedTable] = useState<string>('');
     const [tableData, setTableData] = useState<TableData | null>(null);
@@ -31,14 +33,21 @@ export default function DBTest() {
     }, []);
 
     useEffect(() => {
+        if (selectedDatabase) {
+            fetchDbInfo(selectedDatabase);
+        }
+    }, [selectedDatabase]);
+
+    useEffect(() => {
         if (selectedSchema && selectedTable) {
             fetchTableData();
         }
     }, [selectedSchema, selectedTable]);
 
-    const fetchDbInfo = async () => {
+    const fetchDbInfo = async (dbName?: string) => {
         try {
-            const response = await fetch('/api/db/info');
+            const url = dbName ? `/api/db/info?db=${encodeURIComponent(dbName)}` : '/api/db/info';
+            const response = await fetch(url);
             const data = await response.json();
             console.log('DB Info:', data);
             setDbInfo(data);
@@ -67,6 +76,13 @@ export default function DBTest() {
         }
     };
 
+    const handleDatabaseChange = (dbName: string) => {
+        setSelectedDatabase(dbName);
+        setSelectedSchema('');
+        setSelectedTable('');
+        setTableData(null);
+    };
+
     const handleSchemaChange = (schema: string) => {
         setSelectedSchema(schema);
         setSelectedTable('');
@@ -88,7 +104,18 @@ export default function DBTest() {
                 <div className="flex items-center space-x-4">
                     <div className="flex items-center space-x-2">
                         <label className="text-sm font-medium">データベース:</label>
-                        <span className="text-sm">{dbInfo?.database}</span>
+                        <select
+                            value={selectedDatabase}
+                            onChange={(e) => handleDatabaseChange(e.target.value)}
+                            className="border rounded px-2 py-1 text-sm"
+                        >
+                            <option value="">選択してください</option>
+                            {dbInfo?.availableDatabases.map((db) => (
+                                <option key={db} value={db}>
+                                    {db}
+                                </option>
+                            ))}
+                        </select>
                     </div>
                     <div className="flex items-center space-x-2">
                         <label className="text-sm font-medium">スキーマ:</label>
@@ -96,6 +123,7 @@ export default function DBTest() {
                             value={selectedSchema}
                             onChange={(e) => handleSchemaChange(e.target.value)}
                             className="border rounded px-2 py-1 text-sm"
+                            disabled={!selectedDatabase}
                         >
                             <option value="">選択してください</option>
                             {dbInfo?.schemas.map((schema) => (
@@ -129,12 +157,12 @@ export default function DBTest() {
                 {error && <div className="text-red-500 text-sm mt-4">{error}</div>}
 
                 {tableData && (
-                    <div className="mt-6 max-h-[165px] overflow-y-auto">
+                    <div className="mt-6 max-h-[200px] overflow-y-auto">
                         <table className="min-w-full border-collapse text-sm">
                             <thead className="sticky top-0 bg-gray-100">
                                 <tr>
                                     {tableData.columns?.map((column) => (
-                                        <th key={column.column_name} className="border px-2 py-[2px] text-left">
+                                        <th key={column.column_name} className="border px-2 py-1 text-left">
                                             {column.column_name}
                                             <span className="text-gray-500 text-xs ml-1">({column.data_type})</span>
                                         </th>

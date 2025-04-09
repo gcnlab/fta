@@ -1,10 +1,18 @@
-import { NextResponse } from 'next/server';
-import { getSchemas, getTables, getDatabaseName } from '@/lib/db';
+import { NextRequest, NextResponse } from 'next/server';
+import { getSchemas, getTables, getDatabaseName, getAvailableDatabases, switchDatabase } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
+    const searchParams = request.nextUrl.searchParams;
+    const dbName = searchParams.get('db');
+
+    // データベースが指定されている場合は切り替え
+    if (dbName) {
+      await switchDatabase(dbName);
+    }
+
     const database = await getDatabaseName();
     const schemas = await getSchemas();
     
@@ -17,6 +25,7 @@ export async function GET() {
 
     return NextResponse.json({
       database,
+      availableDatabases: getAvailableDatabases(),
       schemas,
       tablesBySchema,
     });
